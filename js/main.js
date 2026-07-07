@@ -112,6 +112,17 @@
   
     gsap.registerPlugin(ScrollTrigger);
   
+    // رفع کندی تاچ روی موبایل در بخش‌های پین‌شده (Hero) —
+    // مرورگرهای موبایل رویداد touchmove را با فیزیک/مومنتوم خودشان مدیریت می‌کنند
+    // که با اسکرول پین‌شده‌ی GSAP (scrub) تداخل ایجاد می‌کند و باعث می‌شود
+    // برای اسکرول کردن باید بیشتر روی صفحه بکشید. normalizeScroll این تداخل را برطرف می‌کند.
+    // type:"touch" یعنی فقط روی حرکت انگشت اعمال میشه و اسکرول با ماوس/ویل دست‌نخورده
+    // و طبیعی می‌مونه (که قبلا باعث پرش می‌شد چون روی همه‌ی ورودی‌ها اعمال شده بود).
+    ScrollTrigger.normalizeScroll({
+      type: "touch",
+      momentum: (self) => Math.min(2.8, Math.abs(self.velocityY) / 1400),
+    });
+  
     const stage = hero.querySelector(".hero-stage");
     const figure = hero.querySelector(".hero-figure");
     const headlines = hero.querySelectorAll(".hero-headline");
@@ -122,7 +133,7 @@
     const isDesktop = window.matchMedia("(min-width:900px)").matches;
     const distance = vh * 1.5;
   
-    const HEADLINE_TRAVEL = isDesktop ? 0.32 : 0.46;
+    const HEADLINE_TRAVEL = isDesktop ? 0.32 : 0.36;
     const FIGURE_PARALLAX = isDesktop ? 0.3 : 0.42;
   
     const tl = gsap.timeline({
@@ -181,7 +192,7 @@
   
     function updateCarousel() {
       const isDesktop = window.matchMedia("(min-width: 900px)").matches;
-      const stepX = isDesktop ? window.innerWidth * 0.16 : window.innerWidth * 0.25;
+      const stepX = isDesktop ? window.innerWidth * 0.22 : window.innerWidth * 0.32; // افزایش بیشتر فاصله
   
       cards.forEach((card, i) => {
         let offset = i - currentIndex;
@@ -193,11 +204,16 @@
   
         if (absOffset <= maxVisibleRadius) {
           card.style.visibility = "visible";
-          card.style.opacity = absOffset === 0 ? "1" : (absOffset === 1 ? "0.65" : "0.32");
+          
+          const opacityValue = absOffset === 0 ? "1" : (absOffset === 1 ? "0.7" : "0.4");
+          const blurValue = absOffset === 0 ? "0px" : (absOffset === 1 ? "2px" : "5px");
+          
+          card.style.opacity = opacityValue;
+          card.style.filter = `blur(${blurValue})`;
   
-          const scale = absOffset === 0 ? 1 : (absOffset === 1 ? 0.76 : 0.58);
-          const dip = absOffset === 0 ? 0 : (absOffset === 1 ? 26 : 48);
-          const rotateY = offset === 0 ? 0 : (offset > 0 ? -16 : 16);
+          const scale = absOffset === 0 ? 1 : (absOffset === 1 ? 0.78 : 0.55);
+          const dip = absOffset === 0 ? 0 : (absOffset === 1 ? 18 : 38);
+          const rotateY = offset === 0 ? 0 : (offset > 0 ? -12 : 12);
           const translateX = -offset * stepX; 
   
           const zIndex = 100 - absOffset;
@@ -207,6 +223,7 @@
         } else {
           card.style.visibility = "hidden";
           card.style.opacity = "0";
+          card.style.filter = "blur(8px)";
           card.style.transform = `translate3d(-50%, -50%, 0) scale(0.4)`;
         }
       });
@@ -310,7 +327,6 @@
         document.getElementById("modalRole").textContent = role;
         document.getElementById("modalImg").src = img;
   
-        // بررسی تلگرام
         const tgBtn = document.getElementById("modalTg");
         if (tg && tg !== "") {
           tgBtn.style.display = "flex";
@@ -320,7 +336,6 @@
           tgBtn.style.display = "none";
         }
   
-        // بررسی اینستاگرام
         const igBtn = document.getElementById("modalIg");
         if (ig && ig !== "") {
           igBtn.style.display = "flex";
@@ -330,7 +345,6 @@
           igBtn.style.display = "none";
         }
   
-        // بررسی وب‌سایت
         const siteBtn = document.getElementById("modalSite");
         if (site && site !== "") {
           siteBtn.style.display = "flex";
