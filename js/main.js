@@ -112,57 +112,50 @@
   
     gsap.registerPlugin(ScrollTrigger);
   
+    // pin باید همیشه فعال باشه (هم دسکتاپ هم موبایل)، چون کل افکت ریویل
+    // (نمایش تدریجی متن، جمع‌شدن هدلاین) بر این فرض بنا شده که بخش هیرو
+    // در طول اسکرول، توی صفحه ثابت (قفل) بمونه. اگه pin نباشه، بخش هیرو
+    // طبیعی رد میشه و وقتی نوبت افکت‌ها می‌رسه، دیگه اصلاً روی صفحه نیست.
+    //
+    // برای روون‌شدن تاچ، به‌جای غیرفعال کردن pin، فقط رفتار اسکرول تاچ رو
+    // با normalizeScroll نرمال می‌کنیم (فقط روی نوع "touch"، تا ماوس دست‌نخورده بمونه).
+    ScrollTrigger.normalizeScroll({
+      type: "touch",
+      momentum: (self) => Math.min(3, Math.abs(self.velocityY) / 1000),
+    });
+  
     const stage = hero.querySelector(".hero-stage");
     const figure = hero.querySelector(".hero-figure");
     const headlines = hero.querySelectorAll(".hero-headline");
     const reveal = hero.querySelector(".hero-reveal");
     const navPill = document.querySelector(".nav-pill");
   
-    // علت اصلی کندی تاچ: وقتی بخشی هم pin میشه و هم scrub داره،
-    // مرورگر موبایل باید بین اسکرول طبیعی/مومنتوم خودش و قفل‌شدن
-    // بخش توسط GSAP تصمیم بگیره، و همین باعث لگ/سنگین‌شدن تاچ میشه.
-    // به‌جای تلاش برای هماهنگ کردن این دو تا (normalizeScroll و امثالش)،
-    // روی تاچ اصلاً pin رو غیرفعال می‌کنیم؛ انیمیشن (پارالاکس/اسکیل)
-    // همچنان با اسکرول اجرا میشه ولی بخش قفل نمیشه، پس تاچ کاملاً طبیعی می‌مونه.
-    ScrollTrigger.matchMedia({
-      "(pointer: fine)": function () {
-        buildHeroTimeline({ pin: true });
-      },
-      "(pointer: coarse)": function () {
-        buildHeroTimeline({ pin: false });
+    const vh = window.innerHeight;
+    const isDesktop = window.matchMedia("(min-width:900px)").matches;
+    const distance = vh * 1.5;
+  
+    const HEADLINE_TRAVEL = isDesktop ? 0.32 : 0.36;
+    const FIGURE_PARALLAX = isDesktop ? 0.3 : 0.42;
+  
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: `+=${distance}`,
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
       },
     });
   
-    function buildHeroTimeline(opts) {
-      const vh = window.innerHeight;
-      const isDesktop = window.matchMedia("(min-width:900px)").matches;
-      const distance = vh * 1.5;
+    tl.to(stage, { y: -vh * 0.14, ease: "none", duration: 1 }, 0);
+    tl.to(figure, { y: -vh * FIGURE_PARALLAX, ease: "none", duration: 1 }, 0);
+    tl.to(headlines, { y: vh * HEADLINE_TRAVEL, scale: 0.56, ease: "none", duration: 1 }, 0);
   
-      const HEADLINE_TRAVEL = isDesktop ? 0.32 : 0.36;
-      const FIGURE_PARALLAX = isDesktop ? 0.3 : 0.42;
+    tl.call(() => navPill.classList.remove("is-visible"), null, 0);
+    tl.call(() => navPill.classList.add("is-visible"), null, 0.05);
   
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: `+=${distance}`,
-          scrub: true,
-          pin: opts.pin,
-          anticipatePin: opts.pin ? 1 : 0,
-        },
-      });
-  
-      tl.to(stage, { y: -vh * 0.14, ease: "none", duration: 1 }, 0);
-      tl.to(figure, { y: -vh * FIGURE_PARALLAX, ease: "none", duration: 1 }, 0);
-      tl.to(headlines, { y: vh * HEADLINE_TRAVEL, scale: 0.56, ease: "none", duration: 1 }, 0);
-  
-      tl.call(() => navPill.classList.remove("is-visible"), null, 0);
-      tl.call(() => navPill.classList.add("is-visible"), null, 0.05);
-  
-      tl.to(reveal, { opacity: 1, duration: 0.001 }, 0.82);
-  
-      return tl;
-    }
+    tl.to(reveal, { opacity: 1, duration: 0.001 }, 0.82);
   }
   
   /* ---------------------------------------------------------
