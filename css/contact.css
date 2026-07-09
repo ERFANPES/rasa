@@ -1,0 +1,355 @@
+/* =========================================================
+   contact.css — طراحی مدرن صفحه‌ی تماس با ما
+   پس‌زمینه‌ی روشن (f6fdff) در تمام صفحه به‌جز فوتر سایت
+   ========================================================= */
+
+.contact-body{
+  background:var(--c-mist) !important;
+  color:#16302f;
+}
+
+/* گرادینت مشترک فوتر (transparent → ink) برای بلند شدن از پس‌زمینه‌ی
+   تیره‌ی بقیه صفحات طراحی شده. چون پس‌زمینه‌ی این صفحه سفید است، همان
+   گرادینت باعث می‌شد بالای فوتر یک نوار سفید دیده شود. اینجا فقط
+   رنگ را یکدست می‌کنیم؛ بقیه‌ی استایل فوتر (فاصله‌ها، رنگ متن،
+   چیدمان) دقیقاً همان style.css مشترک است. */
+.contact-body .site-footer{
+  background:var(--c-ink);
+  color:var(--c-mist);
+}
+
+.c2-page{
+  position:relative;
+  z-index:2;
+  max-width:1180px;
+  margin:0 auto;
+  padding:1.6rem 5vw 2.5rem;
+}
+
+/* ---------------------------------------------------------
+   Eyebrow / section head shared
+--------------------------------------------------------- */
+.c2-eyebrow{
+  display:inline-block;
+  font-size:.78rem;
+  font-weight:800;
+  color:var(--c-teal);
+  background:rgba(12,141,141,.09);
+  padding:.35rem 1rem;
+  border-radius:999px;
+  letter-spacing:.02em;
+  margin-bottom:1rem;
+}
+
+.c2-section-head{ text-align:center; max-width:560px; margin:0 auto 1.8rem; }
+.c2-section-title{
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:clamp(1.5rem, 3.4vw, 2.1rem);
+  color:var(--c-ink);
+  margin:0 0 .6rem;
+}
+.c2-section-sub{ color:#4f7373; font-size:.92rem; line-height:1.8; margin:0; }
+
+/* ---------------------------------------------------------
+   Hero
+--------------------------------------------------------- */
+.c2-hero{
+  text-align:center;
+  max-width:600px;
+  margin:0 auto 2.2rem;
+}
+.c2-hero-title{
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:clamp(1.7rem, 4vw, 2.4rem);
+  line-height:1.3;
+  color:var(--c-ink);
+  margin:0 0 .6rem;
+}
+.c2-hero-sub{
+  color:#4f7373;
+  font-size:.95rem;
+  line-height:1.85;
+  margin:0;
+  max-width:480px;
+  margin-inline:auto;
+}
+
+/* ---------------------------------------------------------
+   کارت‌های اطلاعات تماس
+--------------------------------------------------------- */
+.c2-info-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:1.1rem;
+  margin-bottom:2.6rem;
+}
+.c2-info-card{
+  background:#fff;
+  border:1px solid #e3f6f6;
+  border-radius:22px;
+  padding:1.5rem 1.3rem;
+  text-align:center;
+  box-shadow:0 14px 34px rgba(18,84,84,.06);
+  transition:transform .3s var(--ease-signature), box-shadow .3s var(--ease-signature), border-color .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.c2-info-card::before{
+  content:"";
+  position:absolute; inset:0 0 auto 0; height:4px;
+  background:linear-gradient(90deg, var(--c-cyan), var(--c-teal));
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.c2-info-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 22px 46px rgba(18,84,84,.14);
+  border-color:rgba(0,255,255,.35);
+}
+.c2-info-card:hover::before{ opacity:1; }
+
+.c2-info-icon{
+  width:52px; height:52px;
+  margin:0 auto 1rem;
+  background:linear-gradient(145deg, #e6fbfb, #d3f6f6);
+  color:var(--c-deep);
+  border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .3s ease, color .3s ease;
+}
+.c2-info-card:hover .c2-info-icon{
+  background:linear-gradient(145deg, var(--c-teal), var(--c-deep));
+  color:#fff;
+}
+.c2-info-icon svg{ width:23px; height:23px; }
+
+.c2-info-label{
+  display:block;
+  font-size:.78rem;
+  font-weight:800;
+  color:var(--c-teal);
+  margin-bottom:.5rem;
+  letter-spacing:.02em;
+}
+.c2-info-value{
+  margin:0 0 .5rem;
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--c-ink);
+  line-height:1.7;
+}
+.c2-info-value a{ color:var(--c-ink); transition:color .2s ease; }
+.c2-info-value a:hover{ color:var(--c-teal); }
+.c2-info-note{ font-size:.74rem; color:#7a9c9c; }
+
+@media (max-width:980px){
+  .c2-info-grid{ grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width:560px){
+  .c2-info-grid{ grid-template-columns:1fr; }
+}
+
+/* ---------------------------------------------------------
+   سوالات متداول
+--------------------------------------------------------- */
+.c2-faq{ margin-bottom:2.6rem; }
+
+.c2-faq-list{
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:.9rem;
+}
+.c2-faq-item{
+  background:#fff;
+  border:1px solid #e3f6f6;
+  border-radius:18px;
+  overflow:hidden;
+  transition:border-color .25s ease, box-shadow .25s ease;
+}
+.c2-faq-item.is-open{
+  border-color:rgba(0,255,255,.45);
+  box-shadow:0 16px 34px rgba(18,84,84,.1);
+}
+
+.c2-faq-question{
+  width:100%;
+  display:flex; align-items:center; gap:.9rem;
+  background:none; border:0; cursor:pointer; text-align:right;
+  padding:1.15rem 1.4rem;
+  font-family:inherit;
+}
+.c2-faq-q-icon{
+  width:30px; height:30px; flex-shrink:0;
+  border-radius:9px;
+  background:rgba(12,141,141,.1);
+  color:var(--c-teal);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:.9rem;
+  transition:background .25s ease, color .25s ease;
+}
+.c2-faq-item.is-open .c2-faq-q-icon{ background:var(--c-teal); color:#fff; }
+.c2-faq-q-text{ flex:1; font-size:.98rem; font-weight:700; color:var(--c-ink); }
+.c2-faq-chevron{
+  width:19px; height:19px; flex-shrink:0; color:var(--c-teal);
+  transition:transform .3s var(--ease-signature);
+}
+.c2-faq-item.is-open .c2-faq-chevron{ transform:rotate(180deg); }
+
+.c2-faq-answer{ max-height:0; overflow:hidden; transition:max-height .35s var(--ease-signature); }
+.c2-faq-answer p{
+  margin:0; padding:0 1.4rem 1.3rem 3.9rem;
+  color:#456a6a; line-height:1.9; font-size:.92rem;
+}
+@media (max-width:600px){
+  .c2-faq-answer p{ padding-right:1.4rem; }
+}
+
+/* ---------------------------------------------------------
+   فرم تماس
+--------------------------------------------------------- */
+.c2-form-section{ margin-bottom:2.8rem; }
+
+.c2-form-card{
+  background:#fff;
+  border:1px solid #e3f6f6;
+  border-radius:32px;
+  padding:2.4rem;
+  display:grid;
+  grid-template-columns:0.85fr 1.15fr;
+  gap:2.6rem;
+  box-shadow:0 30px 70px rgba(18,84,84,.1);
+}
+
+.c2-form-intro{ display:flex; flex-direction:column; }
+.c2-form-intro .c2-section-title{ text-align:right; margin-bottom:.7rem; }
+.c2-form-intro .c2-section-sub{ text-align:right; margin-bottom:1.6rem; }
+
+.c2-form-perks{
+  list-style:none; margin:auto 0 0; padding:0;
+  display:flex; flex-direction:column; gap:.9rem;
+}
+.c2-form-perks li{
+  display:flex; align-items:center; gap:.7rem;
+  font-size:.88rem; font-weight:700; color:var(--c-deep);
+}
+.c2-form-perks svg{
+  width:26px; height:26px; flex-shrink:0; padding:5px;
+  background:rgba(0,255,255,.14); color:var(--c-teal); border-radius:9px;
+}
+
+.c2-form{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem 1.2rem; }
+.c2-field{ display:flex; flex-direction:column; }
+.c2-field--full{ grid-column:1 / -1; }
+
+.c2-field label{
+  font-size:.85rem; font-weight:700; color:var(--c-deep); margin-bottom:.5rem;
+}
+
+.hp-field{ position:absolute; left:-9999px; top:-9999px; opacity:0; height:0; overflow:hidden; }
+
+.c2-input-wrap{ position:relative; }
+.c2-input-icon{
+  position:absolute; top:50%; right:1rem; transform:translateY(-50%);
+  width:18px; height:18px; color:#8fb4b4; pointer-events:none;
+}
+.c2-input-icon--top{ top:1rem; transform:none; }
+
+.c2-input-wrap input,
+.c2-input-wrap textarea{
+  width:100%;
+  padding:.85rem 2.7rem .85rem 1rem;
+  border-radius:14px;
+  border:1.5px solid #dff4f4;
+  background:#f9fffe;
+  font-family:inherit;
+  font-size:.93rem;
+  color:#16302f;
+  outline:none;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.c2-input-wrap input:focus,
+.c2-input-wrap textarea:focus{
+  border-color:var(--c-teal);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(12,141,141,.12);
+}
+.c2-input-wrap--textarea textarea{ resize:vertical; min-height:120px; line-height:1.8; padding-top:1rem; }
+
+.c2-field-hint{ font-size:.75rem; color:#7a9c9c; margin-top:.4rem; }
+.c2-field-error{ font-size:.78rem; color:#c0392b; margin-top:.4rem; min-height:1em; display:block; }
+
+.c2-captcha-row{ display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; }
+.c2-captcha-img{
+  height:50px; border-radius:12px; border:1.5px solid #dff4f4; background:#f9fffe;
+}
+.c2-captcha-refresh{
+  width:42px; height:42px; border-radius:12px; border:1.5px solid #dff4f4;
+  background:#f9fffe; color:var(--c-teal); cursor:pointer; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s ease, color .2s ease, transform .2s ease;
+}
+.c2-captcha-refresh svg{ width:18px; height:18px; }
+.c2-captcha-refresh:hover{ background:var(--c-teal); color:#fff; transform:rotate(45deg); }
+.c2-captcha-row input{ flex:1; min-width:140px; padding:.85rem 1rem; border-radius:14px; border:1.5px solid #dff4f4; background:#f9fffe; font-family:inherit; font-size:.93rem; outline:none; transition:border-color .2s ease, box-shadow .2s ease; }
+.c2-captcha-row input:focus{ border-color:var(--c-teal); box-shadow:0 0 0 4px rgba(12,141,141,.12); }
+
+.c2-submit-btn{
+  grid-column:1 / -1;
+  display:flex; align-items:center; justify-content:center; gap:.6rem;
+  padding:1rem;
+  border:0; border-radius:16px;
+  background:linear-gradient(135deg, var(--c-teal), var(--c-deep));
+  color:#fff;
+  font-family:inherit; font-size:1rem; font-weight:800;
+  cursor:pointer;
+  transition:filter .2s ease, transform .2s ease, box-shadow .2s ease;
+  box-shadow:0 16px 34px rgba(12,141,141,.3);
+}
+.c2-submit-btn svg{ width:18px; height:18px; }
+.c2-submit-btn:hover{ filter:brightness(1.07); transform:translateY(-2px); }
+.c2-submit-btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+
+.c2-form-result{
+  grid-column:1 / -1;
+  text-align:center;
+  font-size:.9rem;
+  font-weight:700;
+  min-height:1.2em;
+}
+.c2-form-result.is-success{ color:#0c8d5f; }
+.c2-form-result.is-error{ color:#c0392b; }
+
+@media (max-width:900px){
+  .c2-form-card{ grid-template-columns:1fr; padding:2rem 1.6rem; border-radius:26px; gap:2rem; }
+  .c2-form-intro .c2-section-title, .c2-form-intro .c2-section-sub{ text-align:center; }
+  .c2-form-perks{ align-items:center; }
+}
+@media (max-width:560px){
+  .c2-form{ grid-template-columns:1fr; }
+}
+
+/* ---------------------------------------------------------
+   نقشه — انتهای صفحه
+--------------------------------------------------------- */
+.c2-map-section{ margin-bottom:1rem; }
+.c2-map-wrap{
+  border-radius:28px;
+  overflow:hidden;
+  min-height:360px;
+  border:1px solid #e3f6f6;
+  box-shadow:0 24px 50px rgba(18,84,84,.12);
+}
+.c2-map{ width:100%; height:100%; min-height:360px; border:0; display:block; filter:saturate(1.05); }
+
+/* ---------------------------------------------------------
+   واکنش‌گرایی کلی
+--------------------------------------------------------- */
+@media (max-width:600px){
+  .c2-page{ padding:1.4rem 5vw 2rem; }
+  .c2-hero-title{ font-size:1.6rem; }
+  .c2-map-wrap{ min-height:260px; border-radius:22px; }
+  .c2-map{ min-height:260px; }
+}
