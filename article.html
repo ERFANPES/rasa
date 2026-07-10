@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">مقاله | رویایی رسا</title>
+<meta name="description" id="pageDescription" content="مقالات رویایی رسا">
+<meta property="og:type" content="article">
+<meta property="og:title" id="ogTitle" content="">
+<meta property="og:description" id="ogDescription" content="">
+<meta property="og:image" id="ogImage" content="">
+<link rel="icon" href="assets/logo/logo-filled-cyan.svg" type="image/svg+xml">
+<link href="assets/vendor/vazirmatn/Vazirmatn-font-face.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/articles.css">
+<link rel="stylesheet" href="css/article.css">
+</head>
+<body>
+
+<div class="reading-progress"><div class="reading-progress-bar" id="readingProgressBar"></div></div>
+
+<main class="article-page" id="articlePage">
+
+  <div class="article-loading" id="articleLoading">
+    <div class="loading-spinner"></div>
+    <p>در حال بارگذاری مقاله...</p>
+  </div>
+
+  <div class="article-not-found" id="articleNotFound" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+    <h1>این مقاله پیدا نشد</h1>
+    <p>ممکن است حذف شده یا آدرس آن تغییر کرده باشد.</p>
+    <a href="articles.html" class="pagination-btn">بازگشت به مقالات</a>
+  </div>
+
+  <article class="article-content" id="articleContent" style="display:none;">
+
+    <!-- ================= هیرو مقاله ================= -->
+    <header class="article-hero" id="articleHero">
+      <div class="article-hero-media">
+        <img id="articleHeroImg" src="" alt="">
+      </div>
+      <div class="article-hero-overlay">
+        <div class="article-hero-inner">
+          <a href="articles.html" class="article-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l-7 7 7 7M2 12h20"/></svg>
+            مقالات
+          </a>
+          <span class="article-cat-badge" id="articleCatBadge" style="display:none;"></span>
+          <h1 id="articleTitle"></h1>
+          <div class="article-meta-row">
+            <span class="article-author"><span class="author-avatar" id="authorAvatar"></span><span id="articleAuthor"></span></span>
+            <span id="articleDate"></span>
+            <span id="articleReadingTime"></span>
+            <span id="articleViews"></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-body-grid">
+      <div class="article-prose" id="articleProse"></div>
+
+      <aside class="article-sidebar">
+        <div class="share-card">
+          <h4>این مقاله را به اشتراک بگذار</h4>
+          <div class="share-buttons">
+            <button id="shareNativeBtn" title="اشتراک‌گذاری" class="share-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.7 15.7 6.3M8.3 13.3l7.4 4.4"/></svg>
+            </button>
+            <a id="shareTelegram" class="share-btn" target="_blank" rel="noopener" title="تلگرام">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 17-7-6 17-4.5-6.5L3 11Z"/><path d="m9.5 14.5 8.5-9.5"/></svg>
+            </a>
+            <button id="shareCopyBtn" class="share-btn" title="کپی لینک">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="tags-card" id="tagsCard" style="display:none;">
+          <h4>برچسب‌ها</h4>
+          <div class="tags-cloud" id="articleTagsCloud"></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ================= مقالات مرتبط ================= -->
+    <section class="related-section" id="relatedSection" style="display:none;">
+      <h2>مطالب مرتبط</h2>
+      <div class="articles-grid" id="relatedGrid"></div>
+    </section>
+
+  </article>
+</main>
+
+<nav class="nav-pill" aria-label="ناوبری اصلی">
+<a class="nav-item" data-color="#00ffff" href="index.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">صفحه اصلی</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+  </a>
+  <a class="nav-item" data-color="#7bfeff" href="about.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">درباره ما</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
+  </a>
+  <a class="nav-item" data-color="#0c8d8d" href="projects.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">پروژه‌ها</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
+  </a>
+  <a class="nav-item is-active" data-color="#b9feff" href="articles.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">مقالات</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+  </a>
+  <a class="nav-item" data-color="#125454" href="contact.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">تماس با ما</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4.5 7 12 13l7.5-6"/></svg>
+  </a>
+</nav>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img class="logo-mark" src="assets/logo/logo-filled-cyan.svg" alt="نشان رویایی رسا">
+      <h3>رویایی رسا</h3>
+      <p>جایی که رویاها به شکل روشن و رسا بیان می‌شوند. این متن نمونه است و باید با معرفی واقعی برند جایگزین شود.</p>
+    </div>
+    <div class="footer-col">
+      <h4>صفحات</h4>
+      <ul>
+        <li><a href="index.html">صفحه اصلی</a></li>
+        <li><a href="about.html">درباره ما</a></li>
+        <li><a href="projects.html">پروژه‌ها</a></li>
+        <li><a href="articles.html">مقالات</a></li>
+        <li><a href="contact.html">تماس با ما</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>ارتباط</h4>
+      <ul>
+        <li><a href="mailto:info@example.com">info@example.com</a></li>
+        <li><a href="#">اینستاگرام</a></li>
+        <li><a href="#">تلگرام</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© ۱۴۰۴ رویایی رسا</span>
+    <span>ساخته‌شده با ❤ برای رویاهای رسا</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/article.js"></script>
+</body>
+</html>
