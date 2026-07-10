@@ -92,7 +92,6 @@ function initNavPill() {
     if (color) item.style.setProperty("--nav-color", color);
   });
 
-  // نوار ناوبری در همه صفحات (به جز صفحه اصلی با hero) نمایش داده شود
   const isHomePage = document.querySelector(".hero") !== null;
   if (!isHomePage) {
     pill.classList.add("is-visible");
