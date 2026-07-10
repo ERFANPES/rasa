@@ -87,9 +87,21 @@
     const pill = document.querySelector(".nav-pill");
     if (!pill) return;
   
+    // مسیر فایل فعلی رو استخراج می‌کنیم (مثلاً "about.html")
+    // اگر صفحه با آدرس ریشه یا بدون نام فایل باز شده باشه، آن را index.html در نظر می‌گیریم
+    let currentPage = window.location.pathname.split("/").pop();
+    if (currentPage === "") currentPage = "index.html";
+  
     pill.querySelectorAll(".nav-item").forEach((item) => {
       const color = item.getAttribute("data-color");
       if (color) item.style.setProperty("--nav-color", color);
+  
+      // فعال/غیرفعال کردن دکمه بر اساس صفحه‌ای که واقعاً در آن هستیم
+      // (به‌جای تکیه به کلاس is-active که دستی توی HTML نوشته شده و
+      // باعث می‌شد "درباره ما" همیشه فعال بمونه)
+      const itemHref = item.getAttribute("href");
+      const itemPage = itemHref ? itemHref.split("/").pop() : "";
+      item.classList.toggle("is-active", itemPage === currentPage);
     });
   
     // بررسی می‌کنیم که آیا صفحه اصلی است یا نه
