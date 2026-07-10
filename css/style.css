@@ -156,27 +156,27 @@
   
   @media (min-width:900px){
     .nav-pill{ 
-      gap:12px; 
-      padding:10px 28px; 
+      gap:16px;            /* افزایش فاصله بین آیتم‌ها برای عرض بیشتر کل نوار */
+      padding:14px 32px;   /* افزایش پدینگ داخلی برای بزرگتر شدن کلی نوار */
       bottom:32px;
-      border-radius:28px;
+      border-radius:32px;  /* کمی گردی بیشتر تا با اندازه جدید هماهنگ باشد */
     }
     .nav-item{ 
-      width:68px; 
-      height:62px; 
-      border-radius:16px; 
-      gap:3px;
-      padding:6px 0;
+      width:80px;          /* افزایش عرض هر دکمه */
+      height:74px;         /* افزایش ارتفاع هر دکمه */
+      border-radius:18px; 
+      gap:5px;             /* فاصله بین آیکون و لیبل */
+      padding:8px 0;
     }
     .nav-item .nav-ring{ 
-      border-radius:16px; 
+      border-radius:18px; 
     }
     .nav-item svg{ 
-      width:26px; 
-      height:26px; 
+      width:30px;          /* آیکون بزرگتر */
+      height:30px; 
     }
     .nav-item .nav-label{ 
-      font-size:.65rem; 
+      font-size:.75rem;    /* متن بزرگتر */
     }
   }
   
