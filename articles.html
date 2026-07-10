@@ -4,19 +4,74 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مقالات | رویایی رسا</title>
+<meta name="description" content="مقالات رویایی رسا؛ ایده‌ها، تجربه‌ها و روایت‌هایی که رسا بیان می‌شوند.">
 <link rel="icon" href="assets/logo/logo-filled-cyan.svg" type="image/svg+xml">
 <link href="assets/vendor/vazirmatn/Vazirmatn-font-face.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/articles.css">
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-
-<main class="page-placeholder">
-  <div>
-    <h1>مقالات</h1>
-    <p>این صفحه به‌زودی تکمیل می‌شود.</p>
+<!-- ================= هدر ثابت جستجو : با اسکرول مخفی می‌شود ================= -->
+<header class="search-header" id="searchHeader">
+  <div class="search-header-inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+    <input type="search" id="searchInput" placeholder="در مقالات جستجو کن...">
   </div>
+</header>
+
+<main class="articles-page">
+
+  <!-- ================= هیرو : بنر عکس با عنوان روی آن ================= -->
+  <section class="blog-hero">
+    <div class="blog-hero-frame">
+      <img class="blog-hero-img" src="assets/img/blog main.webp" alt="وبلاگ رویایی رسا" onerror="this.style.display='none'">
+      <h1 class="blog-hero-title">وبلاگ<br><span>رسا</span></h1>
+    </div>
+  </section>
+
+  <!-- ================= دسته‌بندی‌ها ================= -->
+  <section class="cat-section">
+    <div class="cat-head">
+      <h2>دسته‌بندی‌ها</h2>
+    </div>
+    <div class="cat-scroller" id="catScroller">
+      <!-- کارت‌های دسته‌بندی توسط articles.js تزریق می‌شوند -->
+      <div class="cat-skel"></div>
+      <div class="cat-skel"></div>
+      <div class="cat-skel"></div>
+    </div>
+  </section>
+
+  <!-- ================= جدیدترین‌ها : کارت‌های پشته‌ای ================= -->
+  <section class="stack-section">
+    <div class="stack-head">
+      <h2>جدیدترین‌ها</h2>
+      <p>   </p>
+    </div>
+    <div class="stack-wrap" id="stackWrap">
+      <div class="stack-skel"></div>
+    </div>
+  </section>
+
+  <!-- ================= وبلاگ : لیست کامل مقالات ================= -->
+  <section class="blog-list-section">
+    <div class="blog-list-head">
+      <h2>وبلاگ</h2>
+    </div>
+    <div class="blog-list" id="blogList">
+      <div class="list-skel"></div>
+      <div class="list-skel"></div>
+      <div class="list-skel"></div>
+    </div>
+    <div class="articles-empty" id="articlesEmpty" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+      <p>مقاله‌ای با این مشخصات پیدا نشد.</p>
+      <button id="clearFiltersBtn" class="pagination-btn">پاک‌کردن فیلترها</button>
+    </div>
+    <nav class="pagination" id="pagination" style="display:none;"></nav>
+  </section>
+
 </main>
 
 <nav class="nav-pill" aria-label="ناوبری اصلی">
@@ -79,7 +134,7 @@
   </div>
 </footer>
 
-<script src="assets/vendor/three/three.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/articles.js"></script>
 </body>
 </html>
