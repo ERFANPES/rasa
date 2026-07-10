@@ -92,7 +92,17 @@ function initNavPill() {
     if (color) item.style.setProperty("--nav-color", color);
   });
 
-  if (!document.querySelector(".hero")) {
+  // نوار ناوبری در همه صفحات (به جز صفحه اصلی با hero) نمایش داده شود
+  // اگر صفحه اصلی است و hero وجود دارد، نیازی به نمایش نیست
+  // ولی در صفحات دیگر حتماً نمایش داده شود
+  const isHomePage = document.querySelector(".hero") !== null;
+  if (!isHomePage) {
     pill.classList.add("is-visible");
+  } else {
+    // در صفحه اصلی، بعد از اسکرول نمایش داده می‌شود (توسط index.js مدیریت می‌شود)
+    // ولی اگر index.js وجود نداشت، به صورت پیش‌فرض نمایش داده شود
+    setTimeout(() => {
+      pill.classList.add("is-visible");
+    }, 300);
   }
 }
