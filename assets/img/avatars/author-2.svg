@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <defs>
+    <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c8d8d"/>
+      <stop offset="100%" stop-color="#0b0d0d"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" rx="120" fill="url(#ag)"/>
+  <circle cx="120.0" cy="120.0" r="116.0" fill="none" stroke="#7bfeff" stroke-opacity="0.5" stroke-width="3"/>
+  <text x="50%" y="54%" font-family="Vazirmatn, Segoe UI, sans-serif" font-size="82" font-weight="700" fill="#7bfeff" text-anchor="middle" dominant-baseline="middle">ا</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0d0d"/>
+      <stop offset="100%" stop-color="#0c8d8d"/>
+    </linearGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#7bfeff" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="750" fill="url(#g)"/>
+  <rect width="1200" height="750" fill="url(#grid)"/>
+  <circle cx="775" cy="123" r="95" fill="#7bfeff" opacity="0.05"/><circle cx="82" cy="680" r="126" fill="#7bfeff" opacity="0.08"/><circle cx="605" cy="412" r="50" fill="#7bfeff" opacity="0.11"/><circle cx="925" cy="282" r="41" fill="#7bfeff" opacity="0.14"/>
+  <rect x="0" y="0" width="1200" height="750" fill="none" stroke="#7bfeff" stroke-opacity="0.25" stroke-width="2"/>
+  <text x="60" y="610" font-family="Vazirmatn, Segoe UI, sans-serif" font-size="52" font-weight="700" fill="#7bfeff" opacity="0.92" direction="rtl" text-anchor="start">پشت صحنه‌ی طراحی ری‌برندینگ </text>
+  <text x="60" y="665" font-family="Vazirmatn, Segoe UI, sans-serif" font-size="26" fill="#b9feff" opacity="0.65" direction="rtl" text-anchor="start">رویایی رسا — وبلاگ</text>
+  <circle cx="1110" cy="90" r="30" fill="none" stroke="#7bfeff" stroke-width="2" opacity="0.5"/>
+  <circle cx="1110" cy="90" r="10" fill="#7bfeff" opacity="0.8"/>
+</svg>
