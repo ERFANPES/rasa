@@ -72,9 +72,11 @@
     gap:8px; 
     padding:8px 16px;
     border-radius:24px;
-    background:rgba(255,255,255,0.95);
+    background:rgba(255,255,255,0.75);
     border:1px solid rgba(0,0,0,0.06);
     box-shadow:0 8px 30px rgba(0,0,0,0.2);
+    backdrop-filter:blur(14px) saturate(160%);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
     opacity:0;
     pointer-events:none;
     transition:opacity .5s var(--ease-signature), transform .5s var(--ease-signature);

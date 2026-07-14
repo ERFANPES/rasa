@@ -1,0 +1,116 @@
+/* =========================================================
+   search.css — صفحه جستجوی پیشرفته مقالات (رویایی رسا)
+   ========================================================= */
+
+.search-page{
+  position:relative; z-index:5;
+  max-width:1160px;
+  margin:0 auto;
+  padding:6.5rem 6vw 4rem;
+}
+@media (min-width:900px){ .search-page{ padding-top:7.5rem; } }
+
+/* ---------------------------------------------------------
+   هیرو کوچک بالای نتایج
+--------------------------------------------------------- */
+.search-hero{ text-align:right; margin-bottom:1.8rem; }
+.search-hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem, 3vw, 2.3rem);
+  font-weight:900; margin:0 0 .4rem;
+  color:var(--c-ink);
+}
+.search-hero p{
+  margin:0; font-size:.92rem; color:var(--c-deep); opacity:.75;
+}
+
+/* ---------------------------------------------------------
+   پنل فیلترهای پیشرفته
+--------------------------------------------------------- */
+.filters-panel{
+  background:#fff;
+  border:1.5px solid rgba(12,141,141,.14);
+  border-radius:var(--r-lg, 22px);
+  box-shadow:0 20px 46px -28px rgba(18,84,84,.28);
+  margin-bottom:2.4rem;
+  overflow:hidden;
+}
+
+.filters-toggle{
+  width:100%;
+  display:flex; align-items:center; gap:.6rem;
+  background:transparent; border:0; cursor:pointer;
+  padding:1.1rem 1.4rem;
+  font-family:inherit; font-size:.98rem; font-weight:700;
+  color:var(--c-ink);
+}
+.filters-toggle svg{ width:19px; height:19px; color:var(--c-teal); flex-shrink:0; }
+.filters-toggle span{ flex:1; text-align:right; }
+.filters-toggle .chev{ transition:transform .25s ease; }
+.filters-toggle[aria-expanded="true"] .chev{ transform:rotate(180deg); }
+
+.filters-body{
+  display:none;
+  grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+  gap:1rem;
+  padding:0 1.4rem 1.3rem;
+}
+.filters-panel.is-open .filters-body{ display:grid; }
+
+.filter-field{ display:flex; flex-direction:column; gap:.4rem; }
+.filter-field label{
+  font-size:.78rem; font-weight:700; color:var(--c-deep); opacity:.8;
+}
+.filter-field select{
+  appearance:none;
+  width:100%;
+  background:var(--c-mist);
+  border:1.5px solid rgba(12,141,141,.16);
+  border-radius:12px;
+  padding:.72rem 1rem;
+  font-family:inherit; font-size:.88rem; color:var(--c-ink);
+  cursor:pointer;
+  transition:border-color .2s ease;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230c8d8d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:left .8rem center;
+  background-size:16px;
+}
+.filter-field select:focus{ outline:none; border-color:var(--c-teal); }
+.filter-field select:disabled{ opacity:.5; cursor:not-allowed; }
+
+.filter-actions{
+  grid-column:1 / -1;
+  display:flex; gap:.7rem; flex-wrap:wrap;
+  margin-top:.2rem;
+}
+.filter-actions .pagination-btn{ padding:.65rem 1.4rem; }
+
+.active-chips{
+  display:flex; flex-wrap:wrap; gap:.5rem;
+  padding:0 1.4rem 1.2rem;
+}
+.active-chips:empty{ display:none; }
+.chip{
+  display:inline-flex; align-items:center; gap:.4rem;
+  background:rgba(12,141,141,.1);
+  color:var(--c-teal);
+  border-radius:999px;
+  padding:.4rem .9rem;
+  font-size:.78rem; font-weight:700;
+}
+.chip button{
+  background:transparent; border:0; cursor:pointer;
+  color:var(--c-teal); opacity:.7; font-size:.9rem; line-height:1;
+  padding:0; display:flex; align-items:center;
+}
+.chip button:hover{ opacity:1; }
+
+/* ---------------------------------------------------------
+   واکنش‌گرا
+--------------------------------------------------------- */
+@media (max-width:640px){
+  .filters-toggle{ padding:1rem; }
+  .filters-body{ padding:0 1rem 1.1rem; grid-template-columns:1fr 1fr; gap:.7rem; }
+  .active-chips{ padding:0 1rem 1rem; }
+}

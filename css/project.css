@@ -1,0 +1,365 @@
+/* =========================================================
+   project.css — صفحه‌ی تکی پروژه (رویایی رسا)
+   بازطراحی کامل و مستقل: هیرو سینمایی، تیم به‌صورت ردیف افقی،
+   محتوای مجله‌ای بدون سایدبار، و پروژه‌های مرتبط به‌صورت گالری افقی.
+   ========================================================= */
+
+   body{ background:var(--c-mist) !important; color:var(--c-ink); }
+   #bg-canvas{ display:none; }
+   
+   .project-page{ position:relative; z-index:5; }
+   
+   html, body{ overflow-x:hidden; max-width:100%; }
+   img, video, iframe{ max-width:100%; }
+   
+   /* ---------------------------------------------------------
+      نوار پیشرفت مطالعه
+   --------------------------------------------------------- */
+   .reading-progress{
+     position:fixed; top:0; inset-inline:0; height:3px; z-index:60;
+     background:rgba(12,141,141,.12);
+   }
+   .reading-progress-bar{
+     height:100%; width:0%;
+     background:linear-gradient(90deg, var(--c-teal), var(--c-cyan));
+     box-shadow:0 0 10px rgba(12,141,141,.5);
+     transition:width .1s linear;
+   }
+   
+   /* ---------------------------------------------------------
+      حالت بارگذاری / پیدا نشد
+   --------------------------------------------------------- */
+   .project-loading, .project-not-found{
+     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+     text-align:center; color:var(--c-deep); position:relative; z-index:5; padding:2rem;
+   }
+   .loading-spinner{
+     width:38px; height:38px; border-radius:50%; border:3px solid rgba(12,141,141,.15);
+     border-top-color:var(--c-teal); animation:spin 1s linear infinite; margin-bottom:1rem;
+   }
+   @keyframes spin{ to{ transform:rotate(360deg); } }
+   .project-not-found svg{ width:52px; height:52px; opacity:.4; margin-bottom:1rem; }
+   .project-not-found h1{ color:var(--c-ink); font-family:var(--font-display); font-size:1.5rem; margin:0 0 .5rem; }
+   .project-not-found p{ margin:0 0 1.4rem; opacity:.7; font-size:.9rem; }
+   .project-btn{
+     display:inline-flex; align-items:center; gap:.5rem;
+     background:var(--c-teal); color:#fff; font-weight:700; font-size:.88rem;
+     padding:.75rem 1.6rem; border-radius:999px; border:0; cursor:pointer;
+     transition:background .2s ease, transform .2s ease;
+   }
+   .project-btn:hover{ background:var(--c-deep); transform:translateY(-2px); }
+   
+   /* ---------------------------------------------------------
+      هیرو سینمایی
+   --------------------------------------------------------- */
+   .project-hero{
+     position:relative; height:min(70vh, 680px); min-height:340px; overflow:hidden;
+     display:flex; flex-direction:column; justify-content:flex-end;
+   }
+   .project-hero-media{ position:absolute; inset:0; background:#0a1414; }
+   .project-hero-media img, .project-hero-media video{
+     position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+     animation:heroKen 16s ease-in-out infinite alternate;
+   }
+   @keyframes heroKen{ from{ transform:scale(1); } to{ transform:scale(1.08); } }
+   @media (prefers-reduced-motion: reduce){ .project-hero-media img, .project-hero-media video{ animation:none; } }
+   
+   .project-hero-scrim{
+     position:absolute; inset:0; z-index:1;
+     background:
+       linear-gradient(0deg, var(--c-mist) 0%, rgba(4,10,10,.05) 14%, transparent 40%),
+       linear-gradient(180deg, rgba(4,10,10,.55) 0%, transparent 22%);
+   }
+   
+   .project-hero-topbar{
+     position:relative; z-index:3;
+     display:flex; align-items:center; justify-content:space-between;
+     padding:1.5rem 5vw 0;
+   }
+   .project-back{
+     display:inline-flex; align-items:center; gap:.5rem;
+     color:#fff; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.24);
+     padding:.55rem 1.1rem; border-radius:999px; font-size:.84rem; font-weight:600;
+     backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+     transition:border-color .2s ease, background .2s ease;
+   }
+   .project-back:hover{ border-color:var(--c-cyan); background:rgba(255,255,255,.18); }
+   .project-back svg{ width:16px; height:16px; }
+   
+   .project-hero-share{ display:flex; gap:.6rem; }
+   .hero-icon-btn{
+     width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+     background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.24); color:#fff; cursor:pointer;
+     backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+     transition:background .2s ease, border-color .2s ease, transform .2s ease;
+   }
+   .hero-icon-btn svg{ width:17px; height:17px; }
+   .hero-icon-btn:hover{ background:var(--c-teal); border-color:var(--c-teal); transform:translateY(-2px); }
+   
+   .project-hero-cue{
+     position:absolute; z-index:3; bottom:1.4rem; inset-inline:0; margin:0 auto; width:fit-content;
+     color:rgba(255,255,255,.85); animation:cueBounce 2.2s ease-in-out infinite;
+   }
+   .project-hero-cue svg{ width:22px; height:22px; }
+   @keyframes cueBounce{ 0%,100%{ transform:translateY(0); opacity:.6; } 50%{ transform:translateY(8px); opacity:1; } }
+   
+   /* ---------------------------------------------------------
+      معرفی پروژه — چیدمان نامتقارن دوستونه (بدون همپوشانی روی رسانه)
+   --------------------------------------------------------- */
+   .project-intro{
+     display:grid; grid-template-columns:1.3fr .9fr; gap:2.5rem 3.5rem;
+     max-width:1180px; margin:0 auto; padding:3.2rem 6vw 1rem; align-items:end;
+   }
+   .project-intro-left{ display:flex; flex-direction:column; gap:1.1rem; }
+   .project-hero-eyebrow{
+     align-self:flex-start;
+     display:inline-flex; align-items:center; gap:.5rem;
+     background:rgba(12,141,141,.08); border:1px solid rgba(12,141,141,.22);
+     color:var(--c-teal); font-size:.8rem; font-weight:800;
+     padding:.5rem 1.1rem; border-radius:999px; text-decoration:none;
+   }
+   .project-intro-left h1{
+     font-family:var(--font-display); font-weight:900; color:var(--c-ink); margin:0;
+     font-size:clamp(1.9rem, 4.2vw, 3.2rem); line-height:1.28; text-align:right;
+   }
+   .project-intro-right{
+     display:flex; flex-direction:column; gap:1.3rem; align-items:flex-end; text-align:right;
+     border-inline-start:2px solid rgba(12,141,141,.15); padding-inline-start:2rem;
+   }
+   .project-intro-excerpt{ margin:0; color:var(--c-deep); opacity:.82; font-size:1rem; line-height:1.95; }
+   .project-stat-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.7rem; align-self:stretch; }
+   .project-stat-list li{
+     display:flex; align-items:center; justify-content:flex-end; gap:.6rem;
+     color:var(--c-deep); font-size:.9rem; font-weight:600;
+   }
+   .project-stat-list svg{ width:18px; height:18px; color:var(--c-teal); flex-shrink:0; }
+   
+   /* ---------------------------------------------------------
+      تیم پروژه — ردیف افقی خودکار
+   --------------------------------------------------------- */
+   .section-eyebrow{
+     text-align:center; font-size:.78rem; font-weight:800; letter-spacing:.04em;
+     color:var(--c-teal); margin-bottom:.6rem;
+   }
+   
+   .project-team-section{
+     max-width:1080px; margin:0 auto; padding:4.6rem 6vw 1rem; text-align:center;
+   }
+   .project-team-section h2{
+     font-family:var(--font-display); color:var(--c-ink); font-size:1.7rem; font-weight:850; margin:0 0 2.4rem;
+   }
+   .project-team-marquee{
+     -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+     mask-image:linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+   }
+   .project-team-row{
+     display:flex; gap:1.4rem; overflow-x:auto; direction:rtl; justify-content:safe center;
+     scroll-snap-type:x proximity; padding:.4rem 1rem 1rem; scrollbar-width:none; -ms-overflow-style:none;
+   }
+   .project-team-row::-webkit-scrollbar{ display:none; }
+   .team-chip{
+     display:flex; flex-direction:column; align-items:center; text-align:center; gap:.6rem;
+     flex:0 0 auto; width:120px; scroll-snap-align:center;
+     transition:transform .3s var(--ease-signature);
+   }
+   .team-chip:hover{ transform:translateY(-4px); }
+   .team-chip-avatar{
+     width:84px; height:84px; border-radius:50%; overflow:hidden; flex-shrink:0;
+     background:linear-gradient(135deg, var(--c-teal), var(--c-deep));
+     display:flex; align-items:center; justify-content:center;
+     box-shadow:0 14px 30px -16px rgba(12,141,141,.5); border:3px solid #fff;
+   }
+   .team-chip-avatar img{ width:100%; height:100%; object-fit:cover; }
+   .team-chip-avatar span{ color:#fff; font-family:var(--font-display); font-size:1.7rem; font-weight:800; }
+   .team-chip h3{ font-family:var(--font-display); font-size:.95rem; color:var(--c-ink); margin:0; }
+   .team-chip h3 a{ color:inherit; text-decoration:none; }
+   .team-chip h3 a:hover{ color:var(--c-teal); }
+   .team-chip p{ margin:0; font-size:.76rem; color:var(--c-deep); opacity:.7; }
+   .team-chip-badge{
+     font-size:.62rem; font-weight:700; color:var(--c-teal); background:rgba(12,141,141,.1);
+     padding:.15rem .55rem; border-radius:999px;
+   }
+   
+   /* ---------------------------------------------------------
+      محتوا — مجله‌ای، بدون سایدبار
+   --------------------------------------------------------- */
+   .project-prose-section{ padding:4.6rem 6vw 1rem; }
+   .project-prose{
+     max-width:720px; margin:0 auto;
+     color:var(--c-ink); font-size:1.08rem; line-height:2.1;
+     min-width:0; overflow-wrap:break-word; word-break:break-word;
+   }
+   .project-prose > *{ max-width:100%; }
+   .project-prose > *:first-child{ margin-top:0; }
+   .project-prose p{ margin:0 0 1.4em; opacity:.88; }
+   .project-prose > p:first-of-type::first-letter{
+     font-family:var(--font-display); font-weight:900; font-size:3.4em; line-height:.78;
+     float:right; margin-inline-start:.14em; margin-top:.06em; color:var(--c-teal);
+   }
+   .project-prose h2{
+     font-family:var(--font-display); color:var(--c-ink); font-size:1.6rem; margin:2.1em 0 .8em; line-height:1.6;
+     text-align:center; position:relative; padding-bottom:.6em;
+   }
+   .project-prose h2::after{
+     content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+     width:52px; height:3px; border-radius:4px; background:linear-gradient(90deg, var(--c-teal), var(--c-cyan));
+   }
+   .project-prose h3{ font-family:var(--font-display); color:var(--c-deep); font-size:1.22rem; margin:1.8em 0 .7em; }
+   .project-prose a{ color:var(--c-teal); text-decoration:underline; text-underline-offset:3px; }
+   .project-prose strong{ color:var(--c-ink); }
+   .project-prose blockquote{
+     margin:2em 0; padding:1.5em 1.8em; text-align:center;
+     background:linear-gradient(135deg, rgba(12,141,141,.06), rgba(0,255,255,.04));
+     border-radius:var(--r-lg, 20px); color:var(--c-deep); font-style:italic; font-size:1.12em;
+     border:1px solid rgba(12,141,141,.12);
+   }
+   .project-prose ul, .project-prose ol{ padding-inline-start:1.5em; margin:0 0 1.4em; opacity:.9; }
+   .project-prose li{ margin-bottom:.45em; }
+   .project-prose img{
+     max-width:100%; width:100%; height:auto; border-radius:20px; margin:1.8em 0; display:block;
+     box-shadow:0 22px 50px -24px rgba(18,84,84,.4);
+   }
+   .project-prose video, .project-prose iframe, .project-prose embed, .project-prose object{
+     max-width:100%; border-radius:20px; margin:1.8em 0;
+   }
+   .project-prose iframe{ width:100%; aspect-ratio:16/9; height:auto; border:0; }
+   .project-prose table{
+     display:block; width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;
+     border-collapse:collapse; margin:1.8em 0; font-size:.94rem;
+   }
+   .project-prose th, .project-prose td{ padding:.6em .9em; border:1px solid rgba(12,141,141,.18); white-space:nowrap; }
+   .project-prose pre{
+     background:var(--c-ink); border:1px solid rgba(0,0,0,.2); color:var(--c-cyan-2);
+     padding:1.1em 1.2em; border-radius:16px; overflow-x:auto; direction:ltr; text-align:left;
+     font-size:.85rem; line-height:1.8; margin:1.8em 0; max-width:100%;
+     white-space:pre; -webkit-overflow-scrolling:touch;
+   }
+   .project-prose code{ font-family:"SFMono-Regular",Consolas,monospace; }
+   
+   /* ---------------------------------------------------------
+      پروژه‌های مرتبط — گالری افقی
+   --------------------------------------------------------- */
+   .project-related-section{ max-width:1240px; margin:0 auto; padding:5rem 6vw 3rem; }
+   .project-related-head{ text-align:right; margin-bottom:1.8rem; }
+   .project-related-head .section-eyebrow{ text-align:right; }
+   .project-related-head h2{ font-family:var(--font-display); font-size:1.55rem; font-weight:850; color:var(--c-ink); margin:0; }
+   
+   .project-related-scroller{
+     display:flex; gap:1.3rem; overflow-x:auto; padding:.3rem .1rem 1rem;
+     scroll-snap-type:x proximity; scrollbar-width:none; -ms-overflow-style:none;
+   }
+   .project-related-scroller::-webkit-scrollbar{ display:none; }
+   
+   .related-card{
+     position:relative; flex:0 0 auto; width:260px; aspect-ratio:3/4;
+     border-radius:20px; overflow:hidden; text-decoration:none; color:inherit;
+     background:#0d1a1a; scroll-snap-align:start;
+     box-shadow:0 18px 40px -22px rgba(18,84,84,.3);
+     transition:transform .35s var(--ease-signature), box-shadow .35s ease;
+   }
+   .related-card:hover{ transform:translateY(-6px); box-shadow:0 26px 54px -22px rgba(12,141,141,.4); }
+   .related-card-media{ position:absolute; inset:0; }
+   .related-card-media img, .related-card-media video{
+     position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+     transition:transform .6s var(--ease-signature);
+   }
+   .related-card:hover .related-card-media img, .related-card:hover .related-card-media video{ transform:scale(1.08); }
+   .related-card::before{
+     content:""; position:absolute; inset:0; z-index:1;
+     background:linear-gradient(0deg, rgba(6,14,14,.94) 0%, rgba(6,14,14,.5) 40%, rgba(6,14,14,.02) 62%);
+   }
+   .related-card-body{ position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:1.1rem; }
+   .related-card-title{
+     margin:0; text-align:right; color:#fff; font-family:var(--font-display); font-weight:800;
+     font-size:1rem; line-height:1.5;
+     display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+   }
+   
+   /* ---------------------------------------------------------
+      ریل فصل‌ها — شمارشگر قاب سینمایی، ثابت روی لبه‌ی صفحه
+      (چون h2های داخل محتوا فصل‌های روایت پروژه‌اند، شماره‌گذاری این‌جا
+      واقعاً اطلاعات موقعیت خواننده را نشان می‌دهد، نه یک زینت)
+   --------------------------------------------------------- */
+   .chapter-rail{
+     position:fixed; z-index:40; top:50%; inset-inline-start:1.4rem;
+     transform:translateY(-50%);
+     display:flex; flex-direction:column; align-items:center; gap:1rem;
+   }
+   .chapter-rail-frame{
+     font-family:"SFMono-Regular",Consolas,monospace; font-weight:700; font-size:.78rem;
+     color:var(--c-teal); background:rgba(12,141,141,.08); border:1px solid rgba(12,141,141,.25);
+     padding:.35rem .5rem; border-radius:6px; letter-spacing:.05em; min-width:2.4em; text-align:center;
+   }
+   .chapter-rail-list{
+     list-style:none; margin:0; padding:0;
+     display:flex; flex-direction:column; align-items:center; gap:.85rem;
+     position:relative;
+   }
+   .chapter-rail-list::before{
+     content:""; position:absolute; top:0; bottom:0; left:50%; width:1px;
+     background:rgba(12,141,141,.18); transform:translateX(-50%); z-index:0;
+   }
+   .chapter-rail-list li{ position:relative; z-index:1; }
+   .chapter-rail-dot{
+     display:block; width:9px; height:9px; border-radius:50%;
+     background:var(--c-mist); border:2px solid rgba(12,141,141,.35);
+     cursor:pointer; transition:transform .25s ease, background .25s ease, border-color .25s ease;
+     padding:0;
+   }
+   .chapter-rail-dot:hover{ transform:scale(1.3); border-color:var(--c-teal); }
+   .chapter-rail-dot.is-active{ background:var(--c-teal); border-color:var(--c-teal); transform:scale(1.4); }
+   .chapter-rail-tip{
+     position:absolute; inset-inline-start:calc(100% + .7rem); top:50%; transform:translateY(-50%);
+     white-space:nowrap; background:var(--c-ink); color:#fff; font-size:.74rem; font-weight:700;
+     padding:.3rem .7rem; border-radius:6px; opacity:0; pointer-events:none;
+     transition:opacity .2s ease, transform .2s ease;
+   }
+   .chapter-rail-dot:hover + .chapter-rail-tip{ opacity:1; }
+   .chapter-rail-sprocket{
+     width:10px; height:46px; border-radius:3px;
+     background-image:repeating-linear-gradient(0deg, rgba(12,141,141,.3) 0 4px, transparent 4px 10px);
+   }
+   @media (max-width:1180px){ .chapter-rail{ display:none !important; } }
+
+   /* ---------------------------------------------------------
+      نوار سوراخ‌های فیلم — موتیف بصری بخش «تیتراژ»
+   --------------------------------------------------------- */
+   .film-sprocket-strip{
+     height:14px; margin:0 auto 1.6rem; max-width:420px;
+     background-image:radial-gradient(circle, rgba(12,141,141,.28) 2.6px, transparent 2.7px);
+     background-size:22px 14px; background-repeat:repeat-x; background-position:center;
+     -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+     mask-image:linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+   }
+   .project-team-section .film-sprocket-strip:last-child{ margin:1.8rem auto 0; }
+
+   /* ---------------------------------------------------------
+      فوتر — تیره ثابت روی پس‌زمینه روشن
+   --------------------------------------------------------- */
+   .site-footer{ background:#000 !important; border-top:1px solid rgba(255,255,255,.08); position:relative; z-index:10; }
+   .footer-brand h3{ color:#fff !important; }
+   .footer-brand p{ color:rgba(255,255,255,.85) !important; }
+   
+   /* ---------------------------------------------------------
+      ریسپانسیو
+   --------------------------------------------------------- */
+   @media (max-width:900px){
+     .project-hero{ height:min(62vh, 560px); }
+     .project-intro{ grid-template-columns:1fr; gap:1.6rem; padding-top:2.2rem; }
+     .project-intro-right{ border-inline-start:0; padding-inline-start:0; align-items:flex-end; }
+   }
+   
+   @media (max-width:640px){
+     .project-hero{ height:min(48vh, 400px); }
+     .project-intro{ padding:1.8rem 6vw 0; }
+     .project-intro-left h1{ font-size:1.6rem; }
+     .project-intro-excerpt{ font-size:.92rem; }
+     .project-team-section{ padding:3.2rem 6vw 0; }
+     .project-team-section h2{ font-size:1.3rem; margin-bottom:2rem; }
+     .team-chip{ width:96px; }
+     .team-chip-avatar{ width:64px; height:64px; }
+     .project-prose-section{ padding:3.2rem 6vw 0; }
+     .project-prose{ font-size:1rem; line-height:1.95; }
+     .project-prose h2{ font-size:1.3rem; }
+     .related-card{ width:200px; }
+   }

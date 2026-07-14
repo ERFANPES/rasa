@@ -89,8 +89,6 @@
     position:fixed; top:0; inset-inline:0; z-index:60;
     display:flex; justify-content:center;
     padding:1.1rem 6vw;
-    background:linear-gradient(180deg, rgba(240,247,247,.96) 0%, rgba(240,247,247,.86) 70%, transparent 100%);
-    backdrop-filter:blur(10px);
     transition:transform .38s var(--ease-signature), opacity .3s ease;
   }
   .search-header.is-hidden{ transform:translateY(-115%); }
@@ -98,20 +96,23 @@
   .search-header-inner{
     display:flex; align-items:center; gap:.7rem;
     width:100%; max-width:480px;
-    background:#fff; border:1.5px solid rgba(12,141,141,.16);
+    background:rgba(255,255,255,.62); border:1.5px solid rgba(26,26,26,.16);
     border-radius:999px; padding:.85rem 1.4rem;
-    box-shadow:0 14px 34px -16px rgba(18,84,84,.28);
-    transition:border-color .25s ease, box-shadow .25s ease;
+    box-shadow:0 14px 34px -16px rgba(26,26,26,.28);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    transition:border-color .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .search-header-inner:focus-within{
-    border-color:var(--c-teal); box-shadow:0 14px 34px -14px rgba(12,141,141,.4), 0 0 0 4px rgba(12,141,141,.12);
+    background:rgba(255,255,255,.82);
+    border-color:#1a1a1a; box-shadow:0 14px 34px -14px rgba(26,26,26,.4), 0 0 0 4px rgba(26,26,26,.12);
   }
-  .search-header-inner svg{ width:19px; height:19px; color:var(--c-teal); flex-shrink:0; opacity:.8; }
+  .search-header-inner svg{ width:19px; height:19px; color:#1a1a1a; flex-shrink:0; opacity:.8; }
   .search-header-inner input{
     flex:1; background:transparent; border:0; outline:none; color:var(--c-ink);
     font-family:inherit; font-size:.94rem;
   }
-  .search-header-inner input::placeholder{ color:rgba(18,84,84,.4); }
+  .search-header-inner input::placeholder{ color:rgba(26,26,26,.4); }
   
   /* ---------------------------------------------------------
      دسته‌بندی‌ها و متون بخش‌ها
@@ -135,7 +136,7 @@
     display:flex; 
     gap:1rem; 
     overflow-x:auto; 
-    padding:1.2rem .4rem 1.4rem;
+    padding:1.2rem 1.1rem 1.4rem;
     scroll-snap-type:x proximity;
     direction: rtl;
     justify-content: flex-start; 
@@ -157,7 +158,6 @@
   .cat-card:hover{ border-color:rgba(12,141,141,.4); }
   .cat-card.is-selected{
     transform:scale(1.08); z-index:2; border-color:transparent;
-    box-shadow:0 18px 40px -16px rgba(18,84,84,.35);
   }
   .cat-card.is-selected::before{
     content:""; position:absolute; inset:-2px; border-radius:calc(var(--r-lg) + 2px); padding:2px;
@@ -182,6 +182,7 @@
   .cat-card-text small{ font-size:.74rem; color:var(--c-deep); opacity:.68; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   
   .cat-skel{ flex:0 0 auto; width:228px; height:74px; border-radius:var(--r-lg); background:linear-gradient(100deg, rgba(12,141,141,.06) 30%, rgba(12,141,141,.13) 50%, rgba(12,141,141,.06) 70%); background-size:200% 100%; animation:shimmer 1.6s ease-in-out infinite; }
+  .cat-error{ font-size:.85rem; color:var(--c-deep); opacity:.7; padding:.6rem .2rem; }
   
   @keyframes auroraSpin{ to{ --aurora-angle:360deg; } }
   @property --aurora-angle{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
@@ -305,7 +306,7 @@
   
   .stack-wrap{
     position:relative;
-    height: 250px !important;
+    height: 265px !important;
     max-width:760px;
     margin:0 auto;
   }
@@ -314,6 +315,7 @@
     display:block; will-change:transform, opacity;
     transition:transform .65s cubic-bezier(.22,.85,.32,1), opacity .5s ease;
   }
+  .stack-card2 .rasa-card-excerpt{ -webkit-line-clamp:2; }
   .stack-skel{ height:100%; border-radius:var(--r-xl); background:linear-gradient(100deg, rgba(12,141,141,.06) 30%, rgba(12,141,141,.13) 50%, rgba(12,141,141,.06) 70%); background-size:200% 100%; animation:shimmer 1.6s ease-in-out infinite; }
   
   /* ---------------------------------------------------------
@@ -323,8 +325,8 @@
   .blog-list-head{ margin-bottom:1.4rem; }
   
   .blog-list{ display:flex; flex-direction:column; gap:1.6rem; }
-  .blog-list .rasa-card{ height:250px; }
-  
+  .blog-list .rasa-card{ min-height:250px; height:auto; }
+
   .list-skel{ height:250px; border-radius:var(--r-xl); background:linear-gradient(100deg, rgba(12,141,141,.06) 30%, rgba(12,141,141,.13) 50%, rgba(12,141,141,.06) 70%); background-size:200% 100%; animation:shimmer 1.6s ease-in-out infinite; }
   
   /* ---------------------------------------------------------
