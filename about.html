@@ -4,23 +4,480 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>درباره ما | رویایی رسا</title>
+<meta name="description" content="داستان شکل‌گیری رسا، تیمی که این رویا را می‌سازد، و مسیری که تا امروز طی کرده‌ایم.">
 <link rel="icon" href="assets/logo/logo-filled-cyan.svg" type="image/svg+xml">
 <link href="assets/vendor/vazirmatn/Vazirmatn-font-face.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/about.css">
 </head>
-<body>
+<body class="about-body">
 
-<canvas id="bg-canvas"></canvas>
+<main class="about-page">
 
-<main class="page-placeholder">
-  <div>
-    <h1>درباره ما</h1>
-    <p>این صفحه به‌زودی تکمیل می‌شود.</p>
-  </div>
+  <!-- =================== هیرو =================== -->
+  <header class="about-hero">
+    <span class="about-eyebrow">رویایی رسا</span>
+    <h1 class="about-hero-title">داستانی که با <em>یک اتاق کوچک</em> شروع شد</h1>
+    <p class="about-hero-sub">از یک هسته‌ی چندنفره‌ی دانشجویی تا تیمی که امروز فیلم می‌سازد، موسیقی ضبط می‌کند و هویت بصری طراحی می‌کند؛ این‌جا روایت کامل رسا را می‌خوانید.</p>
+  </header>
+
+  <!-- =================== TEAM 3D CARDS (کپی دقیق از صفحه اصلی) =================== -->
+  <section class="team-section" id="team">
+
+    <!-- بخش داستان شکل‌گیری رسا (منطبق بر تصویر) -->
+    <div class="story-container">
+      <div class="story-header-block">
+        <div class="story-logo-box">
+          <img class="story-img-element" src="assets/logo/logo-filled-cyan.svg" alt="نشان رسا">
+        </div>
+        <div class="story-titles">
+          <h2 class="story-main-title">تولد رسانه ای رسا</h2>
+          <p class="story-sub-title">داستان شکل گیری رسا</p>
+        </div>
+      </div>
+
+      <div class="story-body-content">
+        <h3 class="story-intro-title">ما اینگونه متولد شدیم:</h3>
+
+        <p class="story-paragraph">
+          اوایل پاییز ۱۴۰۲ بود که چند دانشجوی دانشگاه صنعتی اراک، توی یک اتاق کوچک توی دانشکده جمع شدند. اتاق هیچ امکاناتی نداشت، جز چند تا صندلی شکسته و یک میز قدیمی. اما چیزی که داشتند، انگیزه بود؛ انگیزه‌هایی برای راه‌اندازی یک گروه رسانه‌ای که قرار بود روایتگر زندگی دانشجویی و مسائل شهر صنعتی اراک باشد.
+        </p>
+
+        <p class="story-paragraph">
+          تعدادشون کم بود. چهار پنج نفر از رشته‌های مختلف؛ یکی دوربین دستش بود, یکی کدنویسی و ادیت بلد بود، یکی نوشتن رو بلد بود و یکی هم ارتباطات و فضای مجازی رو دستش بود. اولش اسم گروه رو گذاشتن «رسا»؛ یعنی روشن و بی‌پرده. هدفشون هم این بود که بدون شعارزدگی، مسائل دانشگاه و شهر رو پوشش بدن.
+        </p>
+
+        <p class="story-paragraph">
+          اولین کارشون یه گزارش از وضعیت کارآموزی دانشجویان بود که توی چند کارخانه‌ی اراک لغو شده بود. گزارش رو روی کاغذ چاپ کردن و بین دانشکده‌ها پخش کردن. استقبال خوبی شد. دانشجوها حس کردن که کسی داره صداشون رو به گوش مسئولین میرسونه.
+        </p>
+
+        <p class="story-paragraph">
+          کم‌کم تعداد اعضا بیشتر شد. یه کانال تلگرامی زدند، صفحه اینستاگرام راه انداختند و شروع کردن به تولید محتوای منظم. گزارش از خوابگاه‌ها، مصاحبه با اساتید، پوشش رویدادهای علمی و فرهنگی دانشگاه و حتی چند تا کار میدانی توی شهر. هر هفته یه برنامه ثابت داشتن.
+        </p>
+
+        <p class="story-paragraph">
+          طبیعتاً کار بدون حاشیه نبود. چند بار از طرف بعضی نهادهای سنتی شهر بهشون فشار آمد که چرا مشکلات رو برجسته میکنید. اما گروه با منطق و مستندات جواب داد و هیچ‌وقت وارد حاشیه نشد. همین کارِ حرفه‌ای باعث شد که کم‌کم مورد اعتماد قرار بگیرن.
+        </p>
+      </div>
+    </div>
+
+    <hr class="story-divider">
+
+    <div class="team-head">
+      <h2 class="team-title">خانواده‌ای به شکل تیم</h2>
+      <p class="team-subtitle">اعضای تیم رویایی رسا</p>
+    </div>
+
+    <div class="team-viewport" id="teamCarousel">
+      <div class="team-track" id="teamTrack">
+
+        <!-- ۱. شایان رجبی -->
+        <div class="team-card" style="background-image: url('assets/img/team/شایان.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="شایان رجبی" data-role="عنوان شغلی ندارد 1" data-img="assets/img/team/شایان.webp" data-tg="shayanr.j" data-ig="sha.yanrj" data-site="">
+        </div>
+
+        <!-- ۲. شهراد اکبری -->
+        <div class="team-card" style="background-image: url('assets/img/team/شهی.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="شهراد اکبری" data-role="عنوان شغلی ندارد 2" data-img="assets/img/team/شهی.webp" data-tg="Mistroshahy" data-ig="Wanted_shahy" data-site="">
+        </div>
+
+        <!-- ۳. ادیب الدین فتحعلیان -->
+        <div class="team-card" style="background-image: url('assets/img/team/ادیب.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="ادیب الدین فتحعلیان" data-role="عنوان شغلی ندارد 3" data-img="assets/img/team/ادیب.webp" data-tg="adibiba" data-ig="adibibafa" data-site="">
+        </div>
+
+        <!-- ۴. آنا بیگی -->
+        <div class="team-card" style="background-image: url('assets/img/team/آنا.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="آنا بیگی" data-role="عنوان شغلی ندارد 4" data-img="assets/img/team/آنا.webp" data-tg="" data-ig="" data-site="">
+        </div>
+
+        <!-- ۵. عرفان سعادتی منعم -->
+        <div class="team-card" style="background-image: url('assets/img/team/عرفان.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="عرفان سعادتی منعم" data-role="عنوان شغلی ندارد 5" data-img="assets/img/team/عرفان.webp" data-tg="erfunsam" data-ig="erfanmonem" data-site="">
+        </div>
+
+        <!-- ۶. محمد جواد محمودی -->
+        <div class="team-card" style="background-image: url('assets/img/team/محمد جواد.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="محمد جواد محمودی" data-role="Full stack Developer" data-img="assets/img/team/محمد جواد.webp" data-tg="Immdjavad" data-ig="Immdjavad" data-site="Immdjavad.ir">
+        </div>
+
+        <!-- ۷. محدثه ولی ئی -->
+        <div class="team-card" style="background-image: url('assets/img/team/محدثه.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="محدثه ولی ئی" data-role="عنوان شغلی ندارد 7" data-img="assets/img/team/محدثه.webp" data-tg="Mohi_mt78" data-ig="mhdsh.valiei" data-site="">
+        </div>
+
+        <!-- ۸. رسول احدی -->
+        <div class="team-card" style="background-image: url('assets/img/team/رسول.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="رسول احدی" data-role="عنوان شغلی ندارد 8" data-img="assets/img/team/رسول.webp" data-tg="" data-ig="" data-site="">
+        </div>
+
+        <!-- ۹. پرنیان باقرنژاد -->
+        <div class="team-card" style="background-image: url('assets/img/team/پرنیان.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="پرنیان باقرنژاد" data-role="عنوان شغلی ندارد 9" data-img="assets/img/team/پرنیان.webp" data-tg="helmetjensen" data-ig="im._.parni" data-site="">
+        </div>
+
+        <!-- ۱۰. دانیال مغانلو -->
+        <div class="team-card" style="background-image: url('assets/img/team/دانیال.webp'); background-size: cover; background-position: center; cursor: pointer;"
+             data-name="دانیال مغانلو" data-role="عنوان شغلی ندارد 10" data-img="assets/img/team/دانیال.webp" data-tg="CaQit" data-ig="idonelii" data-site="">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="team-dots" id="teamDots">
+        <button class="team-dot is-active" type="button" aria-label="عضو شماره ۱"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۲"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۳"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۴"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۵"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۶"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۷"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۸"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۹"></button>
+        <button class="team-dot" type="button" aria-label="عضو شماره ۱۰"></button>
+    </div>
+  </section>
+
+  <!-- =================== چرا این کار را شروع کردیم (جدید) =================== -->
+  <section class="about-why">
+    <div class="about-why-head">
+      <span class="about-eyebrow">باور ما</span>
+      <h2 class="about-why-title">چرا این کار را شروع کردیم</h2>
+      <p class="about-why-sub">قبل از اینکه اسم رسا روی چیزی باشد، چند باور ساده بود که هنوز هم پایه‌ی هر پروژه‌ی ماست.</p>
+    </div>
+
+    <div class="about-why-grid">
+      <div class="about-why-card">
+        <span class="about-why-num">۰۱</span>
+        <h3>صدایی برای نسل ما</h3>
+        <p>فکر می‌کردیم صدای دانشجو باید مستقیم و بی‌واسطه شنیده شود، نه از پشت فیلترهای رسمی.</p>
+      </div>
+      <div class="about-why-card">
+        <span class="about-why-num">۰۲</span>
+        <h3>کیفیت بدون بهانه</h3>
+        <p>امکانات کم را هیچ‌وقت بهانه‌ی کار ضعیف نکردیم؛ همان اتاق کوچک، همان استانداردهای بالا.</p>
+      </div>
+      <div class="about-why-card">
+        <span class="about-why-num">۰۳</span>
+        <h3>رسانه‌ای که اعتماد می‌سازد</h3>
+        <p>تصمیم گرفتیم فقط با مستندات و منطق حرف بزنیم، نه با شعار؛ اعتماد همین‌طور ساخته می‌شود.</p>
+      </div>
+      <div class="about-why-card">
+        <span class="about-why-num">۰۴</span>
+        <h3>یادگیری بی‌وقفه</h3>
+        <p>هر پروژه، حتی کوچک‌ترینش، برایمان فرصتی بود برای یک قدم بهتر شدن.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== فرآیند کار (جدید) =================== -->
+  <section class="about-process">
+    <div class="about-process-head">
+      <span class="about-eyebrow">روش کار</span>
+      <h2 class="about-process-title">از ایده تا تحویل</h2>
+      <p class="about-process-sub">هر پروژه، از کوچک تا بزرگ، همین مسیر پنج‌قدمی را طی می‌کند.</p>
+    </div>
+
+    <ol class="about-process-list">
+      <li class="about-process-step">
+        <span class="about-process-num">۰۱</span>
+        <h3>جلسه و شناخت ایده</h3>
+        <p>اول می‌شنویم؛ هدف، مخاطب و محدودیت‌های پروژه را با هم روشن می‌کنیم.</p>
+      </li>
+      <li class="about-process-step">
+        <span class="about-process-num">۰۲</span>
+        <h3>پیش‌تولید و برنامه‌ریزی</h3>
+        <p>فیلم‌نامه، طرح بصری یا نقشه‌ی راه پروژه آماده و با تیم شما هماهنگ می‌شود.</p>
+      </li>
+      <li class="about-process-step">
+        <span class="about-process-num">۰۳</span>
+        <h3>تولید</h3>
+        <p>فیلم‌برداری، ضبط صدا یا طراحی گرافیکی؛ بسته به نوع پروژه، اجرا شروع می‌شود.</p>
+      </li>
+      <li class="about-process-step">
+        <span class="about-process-num">۰۴</span>
+        <h3>بازبینی و اصلاح</h3>
+        <p>نسخه‌ی اولیه را با شما مرور می‌کنیم و اصلاحات لازم را اعمال می‌کنیم.</p>
+      </li>
+      <li class="about-process-step">
+        <span class="about-process-num">۰۵</span>
+        <h3>تحویل نهایی</h3>
+        <p>فایل نهایی با فرمت و کیفیت موردنیاز شما تحویل داده می‌شود.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- =================== ابزار و تکنولوژی (جدید) =================== -->
+  <section class="about-tools">
+    <div class="about-tools-head">
+      <span class="about-eyebrow">پشت صحنه</span>
+      <h2 class="about-tools-title">با چه ابزارهایی کار می‌کنیم</h2>
+      <p class="about-tools-sub">تجهیزات و نرم‌افزارهایی که پشت هر پروژه‌ی رسا هستند.</p>
+    </div>
+
+    <div class="about-tools-grid">
+      <div class="about-tool-chip">
+        <span class="about-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7 16 12l7 5V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></span>
+        <span>دوربین‌های سینمایی</span>
+      </div>
+      <div class="about-tool-chip">
+        <span class="about-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></span>
+        <span>میکروفون‌های استودیویی</span>
+      </div>
+      <div class="about-tool-chip">
+        <span class="about-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg></span>
+        <span>نرم‌افزار تدوین حرفه‌ای</span>
+      </div>
+      <div class="about-tool-chip">
+        <span class="about-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></span>
+        <span>نرم‌افزار طراحی گرافیک</span>
+      </div>
+      <div class="about-tool-chip">
+        <span class="about-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5Zm-18 0a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5Z"/></svg></span>
+        <span>استودیوی ضبط صدا</span>
+      </div>
+      <div class="about-tool-chip">
+        <span class="about-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.26A8 8 0 1 0 4 14.9"/><path d="M12 12v9M9 18l3 3 3-3"/></svg></span>
+        <span>هماهنگی تیم روی فضای ابری</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== چی شد این شرکت تاسیس شد (جدید) =================== -->
+  <section class="about-founding">
+    <div class="about-founding-grid">
+      <div class="about-founding-media">
+        <img src="assets/img/rasa team.webp" alt="تیم رسا در ابتدای راه">
+        <span class="about-founding-badge">بهار ۱۴۰۳ — اولین دفتر رسمی</span>
+      </div>
+      <div class="about-founding-body">
+        <span class="about-eyebrow">لحظه‌ی تصمیم</span>
+        <p class="about-founding-quote">«یک شب، بعد از تحویل یه پروژه‌ی سنگین، نشستیم و از خودمون پرسیدیم: اگه قرار باشه این‌قدر جدی کار کنیم، چرا رسمی‌ش نکنیم؟»</p>
+        <p class="about-founding-p">
+          تا آن روز، رسا یک گروه دانشجویی بود که شب‌ها و آخر هفته‌ها کنار درس‌هایشان کار می‌کردند. اما وقتی درخواست همکاری از بیرون دانشگاه هم شروع شد، مشخص بود که باید یک قدم جدی‌تر بردارند.
+        </p>
+        <p class="about-founding-p">
+          بهار ۱۴۰۳ اولین فضای کوچک بیرون از دانشگاه را اجاره کردند؛ چند میز، دو تا کامپیوتر بهتر، و یک قرارداد رسمی برای اولین بار. همان‌جا بود که اسم «رویایی رسا» روی سردر یک دفتر واقعی نصب شد.
+        </p>
+        <div class="about-founding-signee">
+          <div>
+            <div class="about-founding-signee-name">از دفتر خاطرات بنیان‌گذاران رسا</div>
+            <div class="about-founding-signee-role">روایتی فرضی برای این صفحه — به‌زودی با متن واقعی جایگزین می‌شود</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== تاریخچه (جدید) =================== -->
+  <section class="about-timeline">
+    <div class="about-timeline-head">
+      <span class="about-eyebrow">مسیر رسا</span>
+      <h2 class="about-timeline-title">تاریخچه‌ی رسا</h2>
+      <p class="about-timeline-sub">از یک اتاق کوچک تا تیمی با پروژه‌های متنوع؛ نگاهی به نقطه‌های مهم این مسیر.</p>
+    </div>
+
+    <ul class="about-timeline-list">
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <span class="about-timeline-year">پاییز ۱۴۰۲</span>
+          <h3>شکل‌گیری هسته‌ی اولیه</h3>
+          <p>چهار پنج دانشجو در یک اتاق کوچک دانشکده، ایده‌ی یک گروه رسانه‌ای دانشجویی را کلید می‌زنند.</p>
+        </div>
+      </li>
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <img class="about-timeline-thumb" src="assets/img/pr1.webp" alt="اولین گزارش میدانی رسا">
+          <span class="about-timeline-year">زمستان ۱۴۰۲</span>
+          <h3>اولین گزارش میدانی</h3>
+          <p>گزارشی درباره‌ی کارآموزی دانشجویان، چاپ و پخش می‌شود و اولین بازخورد جدی را می‌گیرند.</p>
+        </div>
+      </li>
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <span class="about-timeline-year">بهار ۱۴۰۳</span>
+          <h3>راه‌اندازی دفتر رسمی</h3>
+          <p>اولین فضای کاری بیرون از دانشگاه اجاره می‌شود و اسم «رویایی رسا» رسمی می‌شود.</p>
+        </div>
+      </li>
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <img class="about-timeline-thumb" src="assets/img/pr2.webp" alt="اولین همکاری برند رسا">
+          <span class="about-timeline-year">تابستان ۱۴۰۳</span>
+          <h3>اولین همکاری برند</h3>
+          <p>اولین قرارداد با یک برند خارج از فضای دانشگاه امضا می‌شود؛ نقطه‌ی شروع پروژه‌های تجاری.</p>
+        </div>
+      </li>
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <span class="about-timeline-year">پاییز ۱۴۰۳</span>
+          <h3>تکمیل تیم تخصصی</h3>
+          <p>بخش‌های فیلم، موزیک و گرافیک هرکدام مسئول مشخصی پیدا می‌کنند و روند کار حرفه‌ای‌تر می‌شود.</p>
+        </div>
+      </li>
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <img class="about-timeline-thumb" src="assets/img/pr3.webp" alt="ده پروژه رسا">
+          <span class="about-timeline-year">زمستان ۱۴۰۳</span>
+          <h3>عبور از مرز ده پروژه</h3>
+          <p>دهمین پروژه‌ی کامل تیم به پایان می‌رسد؛ نشانه‌ای از ثبات و رشد پیوسته‌ی کار.</p>
+        </div>
+      </li>
+      <li class="about-timeline-item">
+        <span class="about-timeline-node"></span>
+        <div class="about-timeline-card">
+          <span class="about-timeline-year">بهار ۱۴۰۴</span>
+          <h3>تیم ده‌نفره و اولین افتخار</h3>
+          <p>تیم به ده نفر می‌رسد و اولین جایزه‌ی رسمی را برای یکی از پروژه‌هایش دریافت می‌کند.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- =================== آمار رسا (جدید) =================== -->
+  <section class="about-stats">
+    <div class="about-stats-grid">
+      <div class="about-stat">
+        <span class="about-stat-num" data-count="42">۰</span>
+        <span class="about-stat-label">پروژه‌ی تکمیل‌شده</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-num" data-count="3">۰</span>
+        <span class="about-stat-label">سال فعالیت مستمر</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-num" data-count="10">۰</span>
+        <span class="about-stat-label">عضو تیم</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-num" data-count="98" data-suffix="٪">۰</span>
+        <span class="about-stat-label">رضایت مشتری</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== مشتری‌ها و همکاران (جدید) =================== -->
+  <section class="about-clients">
+    <div class="about-clients-head">
+      <span class="about-eyebrow">اعتماد شده</span>
+      <h2 class="about-clients-title">برندهایی که با رسا کار کرده‌اند</h2>
+      <p class="about-clients-sub">لیست زیر فرضی است و به‌زودی با نام مشتریان واقعی جایگزین می‌شود.</p>
+    </div>
+    <div class="about-clients-strip">
+      <span class="about-client-chip">برند نارون</span>
+      <span class="about-client-chip">استودیو موج</span>
+      <span class="about-client-chip">گروه آسو</span>
+      <span class="about-client-chip">رستوران بامداد</span>
+      <span class="about-client-chip">فروشگاه کتیبه</span>
+      <span class="about-client-chip">دانشگاه صنعتی اراک</span>
+    </div>
+  </section>
+
+  <!-- =================== توصیه‌نامه‌ها (جدید) =================== -->
+  <section class="about-testimonials">
+    <div class="about-testimonials-head">
+      <span class="about-eyebrow">حرف مشتری‌ها</span>
+      <h2 class="about-testimonials-title">چیزهایی که درباره‌ی ما گفته‌اند</h2>
+      <p class="about-testimonials-sub">این نقل‌قول‌ها فرضی‌اند و بعداً با نظرات واقعی مشتریان جایگزین می‌شوند.</p>
+    </div>
+
+    <div class="about-testi-grid">
+      <div class="about-testi-card">
+        <p class="about-testi-quote">«تیم رسا از همون جلسه‌ی اول دقیقاً فهمید دنبال چه حسی هستیم. نتیجه‌ی کار فراتر از انتظارمون بود.»</p>
+        <div class="about-testi-person">
+          <span class="about-testi-avatar">ن.ک</span>
+          <div>
+            <div class="about-testi-name">نگار کریمی</div>
+            <div class="about-testi-role">مدیر برند نارون</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-testi-card">
+        <p class="about-testi-quote">«هماهنگی و پیگیری تیم رسا واقعاً حرفه‌ای بود. تحویل هم دقیقاً سر وقت انجام شد.»</p>
+        <div class="about-testi-person">
+          <span class="about-testi-avatar">م.ص</span>
+          <div>
+            <div class="about-testi-name">مهدی صادقی</div>
+            <div class="about-testi-role">بنیان‌گذار استودیو موج</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-testi-card">
+        <p class="about-testi-quote">«کیفیت تصویر و صدای پروژه‌مون بهمون این اطمینان رو داد که برای کارهای بعدی هم سراغ رسا بریم.»</p>
+        <div class="about-testi-person">
+          <span class="about-testi-avatar">س.ح</span>
+          <div>
+            <div class="about-testi-name">سارا حسینی</div>
+            <div class="about-testi-role">مسئول رویدادهای گروه آسو</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== SECTION: AWARDS & TROPHIES (کپی دقیق از صفحه اصلی) =================== -->
+  <section class="awards-section">
+    <div class="awards-header">
+      <h2 class="awards-main-title">دستاوردی چشم‌نواز</h2>
+      <p class="awards-sub-title">ویترین افتخارات رسا</p>
+    </div>
+
+    <div class="awards-viewport" id="awardsCarousel">
+      <div class="awards-track" id="awardsTrack">
+        <div class="award-item" data-index="1"><img src="assets/img/cup/1.webp" alt="افتخار ۱"></div>
+        <div class="award-item" data-index="2"><img src="assets/img/cup/2.webp" alt="افتخار ۲"></div>
+        <div class="award-item" data-index="3"><img src="assets/img/cup/3.webp" alt="افتخار ۳"></div>
+        <div class="award-item" data-index="4"><img src="assets/img/cup/4.webp" alt="افتخار ۴"></div>
+        <div class="award-item" data-index="5"><img src="assets/img/cup/5.webp" alt="افتخار ۵"></div>
+        <div class="award-item" data-index="6"><img src="assets/img/cup/6.webp" alt="افتخار ۶"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== سوالات متداول (جدید) =================== -->
+  <section class="about-faq">
+    <div class="about-faq-head">
+      <span class="about-eyebrow">قبل از شروع همکاری</span>
+      <h2 class="about-faq-title">سوالاتی که زیاد می‌پرسند</h2>
+      <p class="about-faq-sub">اگر جواب سوالت این‌جا نبود، از صفحه‌ی تماس با ما بپرس.</p>
+    </div>
+
+    <div class="about-faq-list">
+      <details class="about-faq-item" open>
+        <summary>یک پروژه معمولاً چقدر طول می‌کشد؟</summary>
+        <p>بسته به نوع پروژه، از چند روز برای یک طرح گرافیکی ساده تا چند هفته برای یک مستند کامل متغیر است. زمان دقیق را در همان جلسه‌ی اول با شما هماهنگ می‌کنیم.</p>
+      </details>
+      <details class="about-faq-item">
+        <summary>هزینه‌ی پروژه چطور تعیین می‌شود؟</summary>
+        <p>بر اساس حجم کار، مدت زمان تولید و تعداد اصلاحات مورد نیاز، یک پیش‌فاکتور شفاف قبل از شروع کار ارائه می‌دهیم.</p>
+      </details>
+      <details class="about-faq-item">
+        <summary>آیا فقط با دانشجویان و دانشگاه کار می‌کنید؟</summary>
+        <p>نه. رسا از یک گروه دانشجویی شروع شد، اما امروز با برندها و کسب‌وکارهای مختلف هم همکاری می‌کند.</p>
+      </details>
+      <details class="about-faq-item">
+        <summary>چند بار می‌توانیم نسخه‌ی کار را اصلاح کنیم؟</summary>
+        <p>در مرحله‌ی بازبینی، تا رسیدن به نتیجه‌ی موردنظر شما همراهتان هستیم؛ جزئیات دقیق دورهای اصلاح در قرارداد هر پروژه مشخص می‌شود.</p>
+      </details>
+      <details class="about-faq-item">
+        <summary>فایل نهایی با چه فرمتی تحویل داده می‌شود؟</summary>
+        <p>بسته به نیاز شما؛ از فایل‌های آماده‌ی پخش در شبکه‌های اجتماعی تا فرمت‌های با کیفیت بالا برای چاپ یا پخش تلویزیونی.</p>
+      </details>
+    </div>
+  </section>
+
 </main>
 
+<!-- =================== FIXED NAV PILL =================== -->
 <nav class="nav-pill" aria-label="ناوبری اصلی">
-<a class="nav-item" data-color="#00ffff" href="index.html">
+  <a class="nav-item" data-color="#00ffff" href="index.html">
     <span class="nav-ring"></span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
     <span class="nav-label">صفحه اصلی</span>
@@ -46,6 +503,38 @@
     <span class="nav-label">تماس با ما</span>
   </a>
 </nav>
+
+<!-- =================== مودال پروفایل تیم (کپی دقیق از صفحه اصلی) =================== -->
+<div class="team-modal" id="teamModal">
+  <div class="modal-overlay" onclick="closeTeamModal()"></div>
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeTeamModal()" aria-label="بستن">&times;</button>
+
+    <div class="modal-profile-wrap">
+      <img src="" id="modalImg" alt="پروفایل">
+    </div>
+
+    <h3 class="modal-name" id="modalName"></h3>
+    <p class="modal-role" id="modalRole"></p>
+
+    <div class="modal-socials">
+      <a href="" id="modalTg" target="_blank" class="social-btn tg-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span class="username"></span>
+      </a>
+
+      <a href="" id="modalIg" target="_blank" class="social-btn ig-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        <span class="username"></span>
+      </a>
+
+      <a href="" id="modalSite" target="_blank" class="social-btn site-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <span class="username"></span>
+      </a>
+    </div>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="footer-grid">
@@ -79,7 +568,8 @@
   </div>
 </footer>
 
-<script src="assets/vendor/three/three.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/index.js"></script>
+<script src="js/about.js"></script>
 </body>
 </html>
