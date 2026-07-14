@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>پنل مدیریت — رویایی رسا (نسخه دمو)</title>
+<link rel="icon" href="../assets/logo/logo-filled-cyan.svg">
+<link rel="stylesheet" href="../assets/vendor/vazirmatn/Vazirmatn-font-face.css">
+<link rel="stylesheet" href="assets/admin-static.css">
+</head>
+<body>
+
+<!-- ===================== صفحه ورود ===================== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <img src="../assets/logo/logo-filled-cyan.svg" alt="رویایی رسا" class="login-logo">
+    <h1>ورود به پنل مدیریت</h1>
+    <p class="login-sub">نسخه‌ی دمو — بدون بک‌اند واقعی</p>
+
+    <div class="demo-note">
+      <strong>حالت نمایشی:</strong> این پنل روی داده‌ی نمونه و
+      <code>localStorage</code> همین مرورگر کار می‌کند (بدون سرور واقعی).
+      تغییرات فقط برای شما و در همین مرورگر باقی می‌مانند و با پاک کردن
+      Local Storage یا رفرش‌های عادی از بین نمی‌روند، اما جایی ارسال نمی‌شوند.<br>
+      نام کاربری: <code>admin</code> — رمز عبور: <code>demo1234</code>
+    </div>
+
+    <form id="loginForm" autocomplete="off">
+      <label>نام کاربری
+        <input type="text" id="loginUser" value="admin" required>
+      </label>
+      <label>رمز عبور
+        <input type="password" id="loginPass" value="demo1234" required>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">ورود</button>
+      <p id="loginError" class="form-error"></p>
+    </form>
+
+    <a href="../index.html" class="back-to-site">← بازگشت به سایت</a>
+  </div>
+</div>
+
+<!-- ===================== پنل اصلی ===================== -->
+<div id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="../assets/logo/logo-filled-cyan.svg" alt="رویایی رسا">
+      <span>پنل مدیریت</span>
+    </div>
+    <nav class="side-nav">
+      <button class="side-link is-active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        داشبورد
+      </button>
+      <button class="side-link" data-view="articles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        مقالات
+        <span class="side-badge" id="badgeArticles"></span>
+      </button>
+      <button class="side-link" data-view="projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        پروژه‌ها
+        <span class="side-badge" id="badgeProjects"></span>
+      </button>
+      <button class="side-link" data-view="comments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+        نظرات
+        <span class="side-badge" id="badgeComments"></span>
+      </button>
+      <button class="side-link" data-view="messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        پیام‌ها
+        <span class="side-badge" id="badgeMessages"></span>
+      </button>
+      <button class="side-link" data-view="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        تنظیمات
+      </button>
+    </nav>
+    <a href="../index.html" class="side-link side-link--muted">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+      مشاهده سایت
+    </a>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="منو">☰</button>
+      <h2 id="viewTitle">داشبورد</h2>
+      <div class="topbar-right">
+        <span class="demo-pill">حالت نمایشی</span>
+        <span class="admin-name" id="currentAdminName">—</span>
+        <button id="logoutBtn" class="btn btn-ghost btn-sm">خروج</button>
+      </div>
+    </header>
+
+    <main class="view-area" id="viewArea"><!-- محتوای هر تب اینجا رندر می‌شود --></main>
+  </div>
+</div>
+
+<!-- مودال عمومی (ویرایش/جزئیات) -->
+<div id="modalOverlay" class="modal-overlay hidden">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="assets/admin-static.js"></script>
+</body>
+</html>

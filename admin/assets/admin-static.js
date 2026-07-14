@@ -1,0 +1,542 @@
+/* =========================================================
+   admin-static.js — منطق پنل مدیریت دمو (بدون بک‌اند واقعی)
+   داده‌ها از ../data/db.json خوانده می‌شوند و تغییرات (ویرایش،
+   حذف، تایید/رد نظر، خواندن پیام و ...) در localStorage همین
+   مرورگر ذخیره می‌شوند. برای ریست کامل دمو، دکمه‌ی «بازنشانی
+   داده‌های دمو» در تب تنظیمات استفاده شود.
+   ========================================================= */
+(function () {
+  "use strict";
+
+  const LS_AUTH = "resa_admin_auth_v1";
+  const LS_OVERLAY = "resa_admin_overlay_v1";
+  const DEMO_USER = "admin";
+  const DEMO_PASS = "demo1234";
+
+  let DB = null;
+  let currentView = "dashboard";
+
+  /* ---------------- overlay (تغییرات محلی روی داده دمو) ---------------- */
+  function readOverlay() {
+    try { return JSON.parse(localStorage.getItem(LS_OVERLAY) || "{}"); }
+    catch (e) { return {}; }
+  }
+  function writeOverlay(ov) {
+    localStorage.setItem(LS_OVERLAY, JSON.stringify(ov));
+  }
+  function patchOverlay(mutator) {
+    const ov = readOverlay();
+    mutator(ov);
+    writeOverlay(ov);
+  }
+
+  function applyOverlay(db) {
+    const ov = readOverlay();
+    (ov.deletedArticles || []).forEach((id) => { db.articles = db.articles.filter((a) => a.id !== id); });
+    (ov.deletedProjects || []).forEach((id) => { db.projects = db.projects.filter((p) => p.id !== id); });
+    Object.entries(ov.articlePatches || {}).forEach(([id, patch]) => {
+      const a = db.articles.find((x) => x.id == id);
+      if (a) Object.assign(a, patch);
+    });
+    Object.entries(ov.projectPatches || {}).forEach(([id, patch]) => {
+      const p = db.projects.find((x) => x.id == id);
+      if (p) Object.assign(p, patch);
+    });
+    Object.entries(ov.commentStatus || {}).forEach(([id, status]) => {
+      const c = findPendingComment(db, id);
+      if (c) c.status = status;
+    });
+    (ov.deletedPending || []).forEach((id) => { db.pending_comments = (db.pending_comments || []).filter((c) => c.id != id); });
+    Object.entries(ov.messageRead || {}).forEach(([id, val]) => {
+      const m = db.messages.find((x) => x.id == id);
+      if (m) m.is_read = val;
+    });
+    (ov.deletedMessages || []).forEach((id) => { db.messages = db.messages.filter((m) => m.id != id); });
+    if (ov.settings) Object.assign(db.settings, ov.settings);
+    db.pending_comments = db.pending_comments || [];
+    db.extraActivity = ov.activity || [];
+  }
+  function findPendingComment(db, id) {
+    return (db.pending_comments || []).find((c) => c.id == id);
+  }
+  function logActivity(description) {
+    patchOverlay((ov) => {
+      ov.activity = ov.activity || [];
+      ov.activity.unshift({ id: Date.now(), admin_username: DEMO_USER, description, hours_ago: 0, justNow: true });
+    });
+  }
+
+  /* ---------------- بارگذاری داده ---------------- */
+  function loadDb() {
+    return fetch("../data/db.json", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((db) => { applyOverlay(db); DB = db; return db; });
+  }
+
+  /* ---------------- احراز هویت ---------------- */
+  function isLoggedIn() { return sessionStorage.getItem(LS_AUTH) === "1"; }
+  function setLoggedIn() { sessionStorage.setItem(LS_AUTH, "1"); }
+  function clearLoggedIn() { sessionStorage.removeItem(LS_AUTH); }
+
+  const loginScreen = document.getElementById("loginScreen");
+  const app = document.getElementById("app");
+
+  document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const u = document.getElementById("loginUser").value.trim();
+    const p = document.getElementById("loginPass").value;
+    const err = document.getElementById("loginError");
+    if (u === DEMO_USER && p === DEMO_PASS) {
+      setLoggedIn();
+      boot();
+    } else {
+      err.textContent = "نام کاربری یا رمز عبور اشتباه است. (دمو: admin / demo1234)";
+    }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    clearLoggedIn();
+    app.classList.add("hidden");
+    loginScreen.classList.remove("hidden");
+  });
+
+  /* ---------------- ناوبری ---------------- */
+  document.querySelectorAll(".side-link[data-view]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentView = btn.dataset.view;
+      document.querySelectorAll(".side-link[data-view]").forEach((b) => b.classList.toggle("is-active", b === btn));
+      document.getElementById("sidebar")?.classList.remove("is-open");
+      render();
+    });
+  });
+  document.querySelector(".sidebar").id = document.querySelector(".sidebar").id || "sidebar";
+  document.getElementById("mobileMenuBtn").addEventListener("click", () => {
+    document.querySelector(".sidebar").classList.toggle("is-open");
+  });
+
+  /* ---------------- کمک‌کننده‌های نمایش ---------------- */
+  function fmtDate(daysAgo) {
+    const d = new Date(Date.now() - daysAgo * 86400000);
+    return d.toLocaleDateString("fa-IR");
+  }
+  function fmtHoursAgo(h) {
+    if (h < 1) return "لحظاتی پیش";
+    if (h < 24) return `${Math.round(h)} ساعت پیش`;
+    return `${Math.round(h / 24)} روز پیش`;
+  }
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.remove("hidden");
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => t.classList.add("hidden"), 2600);
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  /* ---------------- بج‌های سایدبار ---------------- */
+  function updateBadges() {
+    document.getElementById("badgeArticles").textContent = DB.articles.filter((a) => a.status === "draft").length || "";
+    document.getElementById("badgeProjects").textContent = DB.projects.filter((p) => p.status === "draft").length || "";
+    document.getElementById("badgeComments").textContent = (DB.pending_comments || []).filter((c) => c.status === "pending").length || "";
+    document.getElementById("badgeMessages").textContent = DB.messages.filter((m) => !m.is_read).length || "";
+  }
+
+  /* ---------------- رندر هر تب ---------------- */
+  const viewArea = document.getElementById("viewArea");
+  const viewTitles = { dashboard: "داشبورد", articles: "مقالات", projects: "پروژه‌ها", comments: "نظرات", messages: "پیام‌ها", settings: "تنظیمات" };
+
+  function render() {
+    document.getElementById("viewTitle").textContent = viewTitles[currentView];
+    updateBadges();
+    if (currentView === "dashboard") renderDashboard();
+    else if (currentView === "articles") renderArticles();
+    else if (currentView === "projects") renderProjects();
+    else if (currentView === "comments") renderComments();
+    else if (currentView === "messages") renderMessages();
+    else if (currentView === "settings") renderSettings();
+  }
+
+  function renderDashboard() {
+    const publishedArticles = DB.articles.filter((a) => a.status === "published").length;
+    const draftArticles = DB.articles.filter((a) => a.status === "draft").length;
+    const publishedProjects = DB.projects.filter((p) => p.status === "published").length;
+    const pendingComments = (DB.pending_comments || []).filter((c) => c.status === "pending").length;
+    const unreadMsgs = DB.messages.filter((m) => !m.is_read).length;
+    const totalViews = DB.articles.reduce((s, a) => s + a.views, 0) + DB.projects.reduce((s, p) => s + p.views, 0);
+
+    const activity = (DB.extraActivity || []).concat(DB.activity_log || []).slice(0, 6);
+
+    viewArea.innerHTML = `
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">${publishedArticles}</div><div class="stat-label">مقاله منتشرشده${draftArticles ? ` (+${draftArticles} پیش‌نویس)` : ""}</div></div>
+        <div class="stat-card"><div class="stat-num">${publishedProjects}</div><div class="stat-label">پروژه منتشرشده</div></div>
+        <div class="stat-card"><div class="stat-num">${pendingComments}</div><div class="stat-label">نظر در انتظار تایید</div></div>
+        <div class="stat-card"><div class="stat-num">${unreadMsgs}</div><div class="stat-label">پیام خوانده‌نشده</div></div>
+        <div class="stat-card"><div class="stat-num">${totalViews.toLocaleString("fa-IR")}</div><div class="stat-label">مجموع بازدید محتوا</div></div>
+        <div class="stat-card"><div class="stat-num">${DB.visit_stats.today}</div><div class="stat-label">بازدید امروز سایت</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>فعالیت‌های اخیر</h3>
+          ${activity.map((a) => `
+            <div class="panel-row">
+              <span>${esc(a.description)}</span>
+              <span style="color:var(--text-faint); white-space:nowrap;">${a.justNow ? "لحظاتی پیش" : fmtHoursAgo(a.hours_ago)}</span>
+            </div>`).join("") || `<div class="empty-state">فعالیتی ثبت نشده</div>`}
+        </div>
+        <div class="panel">
+          <h3>بازدید ۷ روز اخیر</h3>
+          <div class="mini-bars">
+            ${DB.visit_stats.last_7_days.map((d) => {
+              const max = Math.max(...DB.visit_stats.last_7_days.map((x) => x.count));
+              const h = Math.max(6, Math.round((d.count / max) * 70));
+              return `<div class="bar" style="height:${h}px" title="${d.count} بازدید"><span>${d.offset_days === 0 ? "امروز" : d.offset_days + "ر پیش"}</span></div>`;
+            }).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ---------- مقالات ---------- */
+  function renderArticles() {
+    viewArea.innerHTML = `
+      <div class="panel">
+        <div class="table-toolbar">
+          <input type="search" id="articleSearch" placeholder="جست‌وجو در عنوان مقالات...">
+        </div>
+        <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>عنوان</th><th>دسته</th><th>نویسنده</th><th>وضعیت</th><th>بازدید</th><th></th></tr></thead>
+          <tbody id="articlesTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    `;
+    const tbody = document.getElementById("articlesTbody");
+    function draw(filter) {
+      const list = DB.articles
+        .filter((a) => !filter || a.title.includes(filter))
+        .slice()
+        .sort((a, b) => a.days_ago - b.days_ago);
+      tbody.innerHTML = list.map((a) => `
+        <tr>
+          <td class="cell-title">${esc(a.title)}<span class="sub">/${esc(a.slug)}</span></td>
+          <td>${esc(a.category_name)}</td>
+          <td>${esc(a.author)}</td>
+          <td><span class="badge badge-${a.status}">${a.status === "published" ? "منتشرشده" : "پیش‌نویس"}</span></td>
+          <td>${a.views.toLocaleString("fa-IR")}</td>
+          <td>
+            <div class="row-actions">
+              <button class="btn btn-ghost btn-sm" data-act="edit-article" data-id="${a.id}">ویرایش</button>
+              <button class="btn btn-danger btn-sm" data-act="delete-article" data-id="${a.id}">حذف</button>
+            </div>
+          </td>
+        </tr>
+      `).join("") || `<tr><td colspan="6"><div class="empty-state">مقاله‌ای یافت نشد.</div></td></tr>`;
+    }
+    draw("");
+    document.getElementById("articleSearch").addEventListener("input", (e) => draw(e.target.value.trim()));
+
+    tbody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id, 10);
+      if (btn.dataset.act === "edit-article") openArticleModal(id);
+      if (btn.dataset.act === "delete-article") {
+        if (!confirm("این مقاله حذف شود؟ (فقط در همین مرورگر)")) return;
+        patchOverlay((ov) => { ov.deletedArticles = (ov.deletedArticles || []).concat([id]); });
+        logActivity(`مقاله «${DB.articles.find((a) => a.id === id)?.title || ""}» حذف شد.`);
+        toast("مقاله حذف شد.");
+        loadDb().then(render);
+      }
+    });
+  }
+
+  function openArticleModal(id) {
+    const a = DB.articles.find((x) => x.id === id);
+    if (!a) return;
+    openModal(`
+      <h3>ویرایش مقاله</h3>
+      <div class="field"><label>عنوان</label><input id="edTitle" value="${esc(a.title)}"></div>
+      <div class="field"><label>خلاصه</label><textarea id="edExcerpt">${esc(a.excerpt)}</textarea></div>
+      <div class="field"><label>وضعیت</label>
+        <select id="edStatus">
+          <option value="published" ${a.status === "published" ? "selected" : ""}>منتشرشده</option>
+          <option value="draft" ${a.status === "draft" ? "selected" : ""}>پیش‌نویس</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="edSave">ذخیره تغییرات</button>
+        <button class="btn btn-ghost" id="edCancel">انصراف</button>
+      </div>
+    `);
+    document.getElementById("edCancel").addEventListener("click", closeModal);
+    document.getElementById("edSave").addEventListener("click", () => {
+      const patch = {
+        title: document.getElementById("edTitle").value.trim() || a.title,
+        excerpt: document.getElementById("edExcerpt").value.trim() || a.excerpt,
+        status: document.getElementById("edStatus").value,
+      };
+      patchOverlay((ov) => {
+        ov.articlePatches = ov.articlePatches || {};
+        ov.articlePatches[id] = Object.assign({}, ov.articlePatches[id], patch);
+      });
+      logActivity(`مقاله «${patch.title}» ویرایش شد.`);
+      closeModal();
+      toast("تغییرات ذخیره شد.");
+      loadDb().then(render);
+    });
+  }
+
+  /* ---------- پروژه‌ها ---------- */
+  function renderProjects() {
+    viewArea.innerHTML = `
+      <div class="panel">
+        <div class="table-toolbar">
+          <input type="search" id="projectSearch" placeholder="جست‌وجو در عنوان پروژه‌ها...">
+        </div>
+        <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>عنوان</th><th>دسته</th><th>وضعیت</th><th>بازدید</th><th></th></tr></thead>
+          <tbody id="projectsTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    `;
+    const tbody = document.getElementById("projectsTbody");
+    function draw(filter) {
+      const list = DB.projects
+        .filter((p) => !filter || p.title.includes(filter))
+        .slice()
+        .sort((a, b) => a.days_ago - b.days_ago);
+      tbody.innerHTML = list.map((p) => `
+        <tr>
+          <td class="cell-title">${esc(p.title)}<span class="sub">/${esc(p.slug)}</span></td>
+          <td>${esc(p.category_name)}</td>
+          <td><span class="badge badge-${p.status}">${p.status === "published" ? "منتشرشده" : "پیش‌نویس"}</span></td>
+          <td>${p.views.toLocaleString("fa-IR")}</td>
+          <td>
+            <div class="row-actions">
+              <button class="btn btn-ghost btn-sm" data-act="edit-project" data-id="${p.id}">ویرایش</button>
+              <button class="btn btn-danger btn-sm" data-act="delete-project" data-id="${p.id}">حذف</button>
+            </div>
+          </td>
+        </tr>
+      `).join("") || `<tr><td colspan="5"><div class="empty-state">پروژه‌ای یافت نشد.</div></td></tr>`;
+    }
+    draw("");
+    document.getElementById("projectSearch").addEventListener("input", (e) => draw(e.target.value.trim()));
+
+    tbody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id, 10);
+      if (btn.dataset.act === "edit-project") openProjectModal(id);
+      if (btn.dataset.act === "delete-project") {
+        if (!confirm("این پروژه حذف شود؟ (فقط در همین مرورگر)")) return;
+        patchOverlay((ov) => { ov.deletedProjects = (ov.deletedProjects || []).concat([id]); });
+        logActivity(`پروژه «${DB.projects.find((p) => p.id === id)?.title || ""}» حذف شد.`);
+        toast("پروژه حذف شد.");
+        loadDb().then(render);
+      }
+    });
+  }
+
+  function openProjectModal(id) {
+    const p = DB.projects.find((x) => x.id === id);
+    if (!p) return;
+    openModal(`
+      <h3>ویرایش پروژه</h3>
+      <div class="field"><label>عنوان</label><input id="epTitle" value="${esc(p.title)}"></div>
+      <div class="field"><label>خلاصه</label><textarea id="epExcerpt">${esc(p.excerpt)}</textarea></div>
+      <div class="field"><label>وضعیت</label>
+        <select id="epStatus">
+          <option value="published" ${p.status === "published" ? "selected" : ""}>منتشرشده</option>
+          <option value="draft" ${p.status === "draft" ? "selected" : ""}>پیش‌نویس</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="epSave">ذخیره تغییرات</button>
+        <button class="btn btn-ghost" id="epCancel">انصراف</button>
+      </div>
+    `);
+    document.getElementById("epCancel").addEventListener("click", closeModal);
+    document.getElementById("epSave").addEventListener("click", () => {
+      const patch = {
+        title: document.getElementById("epTitle").value.trim() || p.title,
+        excerpt: document.getElementById("epExcerpt").value.trim() || p.excerpt,
+        status: document.getElementById("epStatus").value,
+      };
+      patchOverlay((ov) => {
+        ov.projectPatches = ov.projectPatches || {};
+        ov.projectPatches[id] = Object.assign({}, ov.projectPatches[id], patch);
+      });
+      logActivity(`پروژه «${patch.title}» ویرایش شد.`);
+      closeModal();
+      toast("تغییرات ذخیره شد.");
+      loadDb().then(render);
+    });
+  }
+
+  /* ---------- نظرات ---------- */
+  function renderComments() {
+    const list = (DB.pending_comments || []).slice().sort((a, b) => a.hours_ago - b.hours_ago);
+    viewArea.innerHTML = `
+      <div class="panel">
+        <h3>صف بررسی نظرات</h3>
+        <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>نویسنده</th><th>متن</th><th>مقاله</th><th>وضعیت</th><th></th></tr></thead>
+          <tbody>
+            ${list.map((c) => `
+              <tr>
+                <td>${esc(c.user_name)}</td>
+                <td style="max-width:320px;">${esc(c.content)}</td>
+                <td>${esc(c.article_title)}</td>
+                <td><span class="badge badge-${c.status}">${{ pending: "در انتظار", approved: "تاییدشده", rejected: "رد‌شده" }[c.status]}</span></td>
+                <td>
+                  <div class="row-actions">
+                    ${c.status !== "approved" ? `<button class="btn btn-success btn-sm" data-act="approve" data-id="${c.id}">تایید</button>` : ""}
+                    ${c.status !== "rejected" ? `<button class="btn btn-danger btn-sm" data-act="reject" data-id="${c.id}">رد</button>` : ""}
+                    <button class="btn btn-ghost btn-sm" data-act="delete-comment" data-id="${c.id}">حذف</button>
+                  </div>
+                </td>
+              </tr>
+            `).join("") || `<tr><td colspan="5"><div class="empty-state">نظری برای بررسی نیست.</div></td></tr>`}
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <p style="color:var(--text-faint); font-size:.8rem;">نظرات تاییدشده‌ی خودِ کاربران سایت به‌صورت خودکار زیر مقالات منتشر می‌شوند (چون در تنظیمات، تایید خودکار فعال است) و در این صف نیستند.</p>
+    `;
+    viewArea.querySelector("table").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.dataset.act === "approve") {
+        patchOverlay((ov) => { ov.commentStatus = Object.assign({}, ov.commentStatus, { [id]: "approved" }); });
+        toast("نظر تایید شد.");
+      } else if (btn.dataset.act === "reject") {
+        patchOverlay((ov) => { ov.commentStatus = Object.assign({}, ov.commentStatus, { [id]: "rejected" }); });
+        toast("نظر رد شد.");
+      } else if (btn.dataset.act === "delete-comment") {
+        if (!confirm("این نظر برای همیشه حذف شود؟")) return;
+        patchOverlay((ov) => { ov.deletedPending = (ov.deletedPending || []).concat([parseInt(id, 10)]); });
+        toast("نظر حذف شد.");
+      }
+      loadDb().then(render);
+    });
+  }
+
+  /* ---------- پیام‌ها ---------- */
+  function renderMessages() {
+    const list = DB.messages.slice().sort((a, b) => a.hours_ago - b.hours_ago);
+    viewArea.innerHTML = `
+      <div class="panel" id="messagesPanel">
+        <h3>پیام‌های فرم تماس</h3>
+        ${list.map((m) => `
+          <div class="panel-row" style="align-items:flex-start; flex-direction:column; gap:6px;">
+            <div style="display:flex; width:100%; justify-content:space-between; gap:10px;">
+              <strong>${esc(m.full_name)} <span style="color:var(--text-faint); font-weight:400;">— ${esc(m.contact_info)}</span></strong>
+              <span class="badge badge-${m.is_read ? "read" : "unread"}">${m.is_read ? "خوانده‌شده" : "خوانده‌نشده"}</span>
+            </div>
+            <p style="margin:2px 0; color:var(--text-main); font-size:.85rem;">${esc(m.message)}</p>
+            <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+              <span style="color:var(--text-faint); font-size:.75rem;">${fmtHoursAgo(m.hours_ago)}</span>
+              <div class="row-actions">
+                <button class="btn btn-ghost btn-sm" data-act="toggle-read" data-id="${m.id}">${m.is_read ? "علامت‌گذاری به‌عنوان نخوانده" : "علامت‌گذاری به‌عنوان خوانده‌شده"}</button>
+                <button class="btn btn-danger btn-sm" data-act="delete-message" data-id="${m.id}">حذف</button>
+              </div>
+            </div>
+          </div>
+        `).join("") || `<div class="empty-state">پیامی وجود ندارد.</div>`}
+      </div>
+    `;
+    document.getElementById("messagesPanel").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.dataset.act === "toggle-read") {
+        const m = DB.messages.find((x) => x.id == id);
+        patchOverlay((ov) => { ov.messageRead = Object.assign({}, ov.messageRead, { [id]: !m.is_read }); });
+      } else if (btn.dataset.act === "delete-message") {
+        if (!confirm("این پیام حذف شود؟")) return;
+        patchOverlay((ov) => { ov.deletedMessages = (ov.deletedMessages || []).concat([parseInt(id, 10)]); });
+        toast("پیام حذف شد.");
+      }
+      loadDb().then(render);
+    });
+  }
+
+  /* ---------- تنظیمات ---------- */
+  function renderSettings() {
+    const autoApprove = DB.settings.comments_auto_approve === "1";
+    viewArea.innerHTML = `
+      <div class="panel">
+        <h3>تنظیمات کلی</h3>
+        <div class="switch-row">
+          <div>
+            <div>تایید خودکار نظرات</div>
+            <div style="color:var(--text-faint); font-size:.78rem; margin-top:2px;">اگر خاموش باشد، نظرات جدید کاربران قبل از انتشار در صف «نظرات» منتظر تایید می‌مانند.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="autoApproveSwitch" ${autoApprove ? "checked" : ""}>
+            <span class="switch-track"></span>
+          </label>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>آمار بازدید سایت</h3>
+        <div class="panel-row"><span>مجموع بازدید</span><strong>${DB.visit_stats.total.toLocaleString("fa-IR")}</strong></div>
+        <div class="panel-row"><span>بازدید امروز</span><strong>${DB.visit_stats.today.toLocaleString("fa-IR")}</strong></div>
+        ${DB.visit_stats.top_pages.map((p) => `<div class="panel-row"><span style="direction:ltr; text-align:right;">${esc(p.page_path)}</span><strong>${p.count.toLocaleString("fa-IR")}</strong></div>`).join("")}
+      </div>
+      <div class="panel">
+        <h3>مدیریت داده‌های دمو</h3>
+        <p style="color:var(--text-mute); font-size:.85rem; line-height:2;">
+          این پنل داده‌ی واقعی ندارد و همه‌چیز روی <code>localStorage</code> مرورگر شما کار می‌کند.
+          با دکمه‌ی زیر می‌توانید تمام تغییراتی که در این پنل انجام داده‌اید (ویرایش‌ها، حذف‌ها، تایید نظرات) را
+          به حالت اولیه‌ی دمو برگردانید.
+        </p>
+        <button class="btn btn-danger" id="resetDemoBtn">بازنشانی داده‌های دمو</button>
+      </div>
+    `;
+    document.getElementById("autoApproveSwitch").addEventListener("change", (e) => {
+      patchOverlay((ov) => { ov.settings = Object.assign({}, ov.settings, { comments_auto_approve: e.target.checked ? "1" : "0" }); });
+      toast("تنظیمات ذخیره شد.");
+      loadDb().then(render);
+    });
+    document.getElementById("resetDemoBtn").addEventListener("click", () => {
+      if (!confirm("همه‌ی تغییرات محلی پنل مدیریت پاک شود؟")) return;
+      localStorage.removeItem(LS_OVERLAY);
+      toast("داده‌های دمو بازنشانی شد.");
+      loadDb().then(render);
+    });
+  }
+
+  /* ---------- مودال عمومی ---------- */
+  function openModal(html) {
+    document.getElementById("modalBox").innerHTML = html;
+    document.getElementById("modalOverlay").classList.remove("hidden");
+  }
+  function closeModal() {
+    document.getElementById("modalOverlay").classList.add("hidden");
+  }
+  document.getElementById("modalOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "modalOverlay") closeModal();
+  });
+
+  /* ---------------- بوت ---------------- */
+  function boot() {
+    loginScreen.classList.add("hidden");
+    app.classList.remove("hidden");
+    document.getElementById("currentAdminName").textContent = "سمیرا راد (دمو)";
+    loadDb().then(render);
+  }
+
+  if (isLoggedIn()) boot();
+})();
