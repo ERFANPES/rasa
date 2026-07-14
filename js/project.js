@@ -59,7 +59,8 @@
       document.getElementById("ogTitle").setAttribute("content", p.title || "");
       document.getElementById("ogDescription").setAttribute("content", p.excerpt || "");
       if (p.cover_type === "image" && p.cover_image) {
-        document.getElementById("ogImage").setAttribute("content", location.origin + "/" + p.cover_image);
+        const ogUrl = /^https?:\/\//.test(p.cover_image) ? p.cover_image : location.origin + "/" + p.cover_image;
+        document.getElementById("ogImage").setAttribute("content", ogUrl);
       }
   
       /* رسانه شاخص هیرو */

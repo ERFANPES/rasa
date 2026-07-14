@@ -80,7 +80,10 @@
       document.getElementById("pageDescription").setAttribute("content", desc);
       document.getElementById("ogTitle").setAttribute("content", a.title);
       document.getElementById("ogDescription").setAttribute("content", desc);
-      if (a.cover_image) document.getElementById("ogImage").setAttribute("content", window.location.origin + "/" + a.cover_image);
+      if (a.cover_image) {
+        const ogUrl = /^https?:\/\//.test(a.cover_image) ? a.cover_image : window.location.origin + "/" + a.cover_image;
+        document.getElementById("ogImage").setAttribute("content", ogUrl);
+      }
   
       const heroImg = document.getElementById("articleHeroImg");
       if (a.cover_image) {
