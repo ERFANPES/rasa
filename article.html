@@ -46,7 +46,13 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l-7 7 7 7M2 12h20"/></svg>
             مقالات
           </a>
-          <span class="article-cat-badge" id="articleCatBadge" style="display:none;"></span>
+          <a href="#" class="article-cat-badge" id="articleCatBadge" style="display:none;">
+            <span class="article-cat-badge-icon" id="articleCatBadgeIcon"></span>
+            <span class="article-cat-badge-text">
+              <strong id="articleCatBadgeName"></strong>
+              <small id="articleCatBadgeDesc"></small>
+            </span>
+          </a>
           <h1 id="articleTitle"></h1>
           <div class="article-meta-row">
             <span class="article-author"><span class="author-avatar" id="authorAvatar"></span><span id="articleAuthor"></span></span>
@@ -62,6 +68,38 @@
       <div class="article-prose" id="articleProse"></div>
 
       <aside class="article-sidebar">
+        <!-- ================= درباره نویسنده ================= -->
+        <section class="author-box" id="authorBox" style="display:none;">
+          <a class="author-box-avatar" id="authorBoxAvatarLink">
+            <img id="authorBoxAvatar" alt="" style="display:none;">
+            <span id="authorBoxInitial"></span>
+          </a>
+          <div class="author-box-info">
+            <span class="author-box-label">درباره نویسنده</span>
+            <a class="author-box-name-link" id="authorBoxNameLink"><h3 id="authorBoxName"></h3></a>
+            <a class="author-box-bio-link" id="authorBoxBioLink"><p id="authorBoxBio" style="display:none;"></p></a>
+            <div class="author-box-socials" id="authorBoxSocials"></div>
+          </div>
+          <a class="author-box-btn" id="authorBoxLink">مقالات این نویسنده</a>
+        </section>
+
+        <div class="categories-card" id="categoriesCard" style="display:none;">
+          <h4>دسته‌بندی</h4>
+          <a href="#" class="main-category-card" id="mainCategoryCard" style="display:none;">
+            <span class="main-category-icon" id="mainCategoryIcon"></span>
+            <span class="main-category-text">
+              <strong id="mainCategoryName"></strong>
+              <small id="mainCategoryDesc"></small>
+            </span>
+          </a>
+          <div class="categories-cloud" id="articleCategoriesCloud"></div>
+        </div>
+
+        <div class="tags-card" id="tagsCard" style="display:none;">
+          <h4>برچسب‌ها</h4>
+          <div class="tags-cloud" id="articleTagsCloud"></div>
+        </div>
+
         <div class="share-card">
           <h4>این مقاله را به اشتراک بگذار</h4>
           <div class="share-buttons">
@@ -76,50 +114,100 @@
             </button>
           </div>
         </div>
-
-        <div class="tags-card" id="tagsCard" style="display:none;">
-          <h4>برچسب‌ها</h4>
-          <div class="tags-cloud" id="articleTagsCloud"></div>
-        </div>
       </aside>
     </div>
-
-    <!-- ================= مقالات مرتبط ================= -->
+    
+    <!-- ================= مطالب مرتبط ================= -->
     <section class="related-section" id="relatedSection" style="display:none;">
       <h2>مطالب مرتبط</h2>
       <div class="articles-grid" id="relatedGrid"></div>
     </section>
 
+    <!-- ================= نظرات کاربران ================= -->
+    <section class="comments-section" id="commentsSection">
+      <h2>نظرات کاربران <span class="comments-count" id="commentsCount"></span></h2>
+
+      <form class="comment-form" id="commentForm">
+        <input type="text" name="website" class="comment-honeypot" tabindex="-1" autocomplete="off">
+        <div class="comment-form-row">
+          <input type="text" id="commentName" placeholder="نام شما" maxlength="100" required>
+        </div>
+        <textarea id="commentContent" placeholder="نظر خود را بنویسید..." rows="3" maxlength="2000" required></textarea>
+        <div class="comment-form-row comment-form-captcha-row">
+          <img id="commentCaptchaImg" class="comment-captcha-img" alt="کد امنیتی" title="برای تغییر کد کلیک کنید">
+          <input type="text" id="commentCaptcha" placeholder="کد امنیتی را وارد کنید" maxlength="5" inputmode="numeric" required>
+        </div>
+        <div class="comment-form-actions">
+          <span class="form-msg" id="commentFormMsg"></span>
+          <button type="submit" class="pagination-btn" id="commentSubmitBtn">ارسال نظر</button>
+        </div>
+      </form>
+
+      <div class="comments-list" id="commentsList">
+        <div class="comments-empty" id="commentsEmpty" style="display:none;">هنوز نظری ثبت نشده؛ اولین نفری باشید که نظر می‌دهد!</div>
+      </div>
+    </section>
+
   </article>
+
+  <!-- ================= مودال پاسخ به نظر ================= -->
+  <div id="replyModal" class="comment-modal" style="display: none;">
+    <div class="comment-modal-content">
+      <div class="comment-modal-header">
+        <h3 id="modalReplyTitle">پاسخ به نظر</h3>
+        <button type="button" id="closeReplyModalBtn" class="comment-modal-close">&times;</button>
+      </div>
+      <form class="comment-reply-form" id="modalReplyForm">
+        <input type="text" name="website" class="comment-honeypot" tabindex="-1" autocomplete="off">
+        <div class="comment-form-row">
+          <input type="text" class="reply-name-input" id="modalReplyName" placeholder="نام شما" maxlength="100" required>
+        </div>
+        <textarea class="reply-content-input" id="modalReplyContent" placeholder="پاسخ خود را بنویسید..." rows="4" maxlength="2000" required></textarea>
+        
+        <div class="comment-form-row comment-form-captcha-row">
+          <img class="comment-captcha-img reply-captcha-img" id="modalReplyCaptchaImg" alt="کد امنیتی" title="برای تغییر کد کلیک کنید">
+          <input type="text" class="reply-captcha-input" id="modalReplyCaptchaInput" placeholder="کد امنیتی" maxlength="5" inputmode="numeric" required>
+        </div>
+        
+        <div class="comment-form-actions">
+          <span class="form-msg reply-form-msg" id="modalReplyMsg"></span>
+          <div class="comment-reply-form-btns">
+            <button type="button" class="comment-reply-cancel-btn" id="cancelReplyModalBtn">انصراف</button>
+            <button type="submit" class="pagination-btn reply-submit-btn" id="modalReplySubmitBtn">ارسال پاسخ</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </main>
 
 <nav class="nav-pill" aria-label="ناوبری اصلی">
-  <a class="nav-item" data-color="#00ffff" href="index.html">
-      <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
-      <span class="nav-label">صفحه اصلی</span>
-    </a>
-    <a class="nav-item" data-color="#7bfeff" href="about.html">
-      <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
-      <span class="nav-label">درباره ما</span>
-    </a>
-    <a class="nav-item" data-color="#0c8d8d" href="projects.html">
-      <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
-      <span class="nav-label">پروژه‌ها</span>
-    </a>
-    <a class="nav-item" data-color="#b9feff" href="articles.html">
-      <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
-      <span class="nav-label">مقالات</span>
-    </a>
-    <a class="nav-item" data-color="#125454" href="contact.html">
-      <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4.5 7 12 13l7.5-6"/></svg>
-      <span class="nav-label">تماس با ما</span>
-    </a>
-  </nav>
+<a class="nav-item" data-color="#00ffff" href="index.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">صفحه اصلی</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+  </a>
+  <a class="nav-item" data-color="#7bfeff" href="about.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">درباره ما</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
+  </a>
+  <a class="nav-item" data-color="#0c8d8d" href="projects.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">پروژه‌ها</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
+  </a>
+  <a class="nav-item is-active" data-color="#b9feff" href="articles.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">مقالات</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+  </a>
+  <a class="nav-item" data-color="#125454" href="contact.html">
+    <span class="nav-ring"></span>
+    <span class="nav-label">تماس با ما</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4.5 7 12 13l7.5-6"/></svg>
+  </a>
+</nav>
 
 <footer class="site-footer">
   <div class="footer-grid">
@@ -149,10 +237,11 @@
   </div>
   <div class="footer-bottom">
     <span>© ۱۴۰۴ رویایی رسا</span>
-    <span>ساخته‌شده با ❤ برای رویاهای رسا</span>
+    <span>ساخته‌شده با ❤ برای رویاهای رسا</span><a href="admin/index.html" style="color:inherit; opacity:.6; font-size:.8em; margin-inline-start:12px;">پنل مدیریت</a>
   </div>
 </footer>
 
+<script src="js/data-shim.js"></script>
 <script src="js/main.js"></script>
 <script src="js/article.js"></script>
 </body>

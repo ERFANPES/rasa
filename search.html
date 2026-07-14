@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مقالات | رویایی رسا</title>
-<meta name="description" content="مقالات رویایی رسا؛ ایده‌ها، تجربه‌ها و روایت‌هایی که رسا بیان می‌شوند.">
+<title>جستجوی مقالات | رویایی رسا</title>
+<meta name="description" content="جستجو و فیلتر پیشرفته در مقالات رویایی رسا؛ بر اساس کلیدواژه، نویسنده، دسته‌بندی و برچسب.">
 <link rel="icon" href="assets/logo/logo-filled-cyan.svg" type="image/svg+xml">
 <link href="assets/vendor/vazirmatn/Vazirmatn-font-face.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/articles.css">
+<link rel="stylesheet" href="css/search.css">
 </head>
 <body>
 
@@ -20,56 +21,61 @@
   </div>
 </header>
 
-<main class="articles-page">
+<main class="search-page">
 
-  <!-- ================= هیرو : بنر عکس با عنوان روی آن ================= -->
-  <section class="blog-hero">
-    <div class="blog-hero-frame">
-      <img class="blog-hero-img" src="assets/img/blog main.webp" alt="وبلاگ رویایی رسا" onerror="this.style.display='none'">
-      <h1 class="blog-hero-title">وبلاگ<br><span>رسا</span></h1>
-    </div>
+  <section class="search-hero">
+    <h1>نتایج جستجو</h1>
+    <p id="searchSummary">در حال بارگذاری نتایج...</p>
   </section>
 
-  <!-- ================= دسته‌بندی‌ها ================= -->
-  <section class="cat-section">
-    <div class="cat-head">
-      <h2>دسته‌بندی‌ها</h2>
+  <!-- ================= فیلترهای پیشرفته ================= -->
+  <section class="filters-panel" id="filtersPanel">
+    <button type="button" class="filters-toggle" id="filtersToggle" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      <span>فیلترهای پیشرفته</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 5 5 5-5"/></svg>
+    </button>
+
+    <div class="filters-body" id="filtersBody">
+      <div class="filter-field">
+        <label for="filterCategory">دسته‌بندی اصلی</label>
+        <select id="filterCategory">
+          <option value="">همه دسته‌بندی‌ها</option>
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="filterSubcategory">دسته‌بندی فرعی</label>
+        <select id="filterSubcategory" disabled>
+          <option value="">ابتدا دسته‌بندی اصلی را انتخاب کنید</option>
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="filterAuthor">نویسنده</label>
+        <select id="filterAuthor">
+          <option value="">همه نویسنده‌ها</option>
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="filterTag">برچسب</label>
+        <select id="filterTag">
+          <option value="">همه برچسب‌ها</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" class="pagination-btn is-active" id="applyFiltersBtn">اعمال فیلتر</button>
+        <button type="button" class="pagination-btn" id="clearFiltersBtn">پاک‌کردن فیلترها</button>
+      </div>
     </div>
-    <div class="cat-scroller" id="catScroller">
-      <!-- کارت‌های دسته‌بندی توسط articles.js تزریق می‌شوند -->
-      <div class="cat-skel"></div>
-      <div class="cat-skel"></div>
-      <div class="cat-skel"></div>
-    </div>
+
+    <div class="active-chips" id="activeChips"></div>
   </section>
 
-  <!-- ================= جدیدترین‌ها : کارت‌های پشته‌ای ================= -->
-  <section class="stack-section">
-    <div class="stack-head">
-      <h2>جدیدترین‌ها</h2>
-      <p>   </p>
-    </div>
-    <div class="stack-wrap" id="stackWrap">
-      <div class="stack-skel"></div>
-    </div>
-  </section>
-
-  <!-- ================= برترین‌ها : پربازدیدترین مقالات (کارت‌های پشته‌ای) ================= -->
-  <section class="stack-section">
-    <div class="stack-head">
-      <h2>برترین‌ها</h2>
-      <p>   </p>
-    </div>
-    <div class="stack-wrap" id="topStackWrap">
-      <div class="stack-skel"></div>
-    </div>
-  </section>
-
-  <!-- ================= وبلاگ : لیست کامل مقالات ================= -->
+  <!-- ================= نتایج ================= -->
   <section class="blog-list-section">
-    <div class="blog-list-head">
-      <h2>وبلاگ</h2>
-    </div>
     <div class="blog-list" id="blogList">
       <div class="list-skel"></div>
       <div class="list-skel"></div>
@@ -77,8 +83,8 @@
     </div>
     <div class="articles-empty" id="articlesEmpty" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
-      <p id="articlesEmptyMsg">مقاله‌ای با این مشخصات پیدا نشد.</p>
-      <button id="clearFiltersBtn" class="pagination-btn">پاک‌کردن فیلترها</button>
+      <p>مقاله‌ای با این مشخصات پیدا نشد.</p>
+      <button id="emptyClearFiltersBtn" class="pagination-btn">پاک‌کردن فیلترها</button>
     </div>
     <nav class="pagination" id="pagination" style="display:none;"></nav>
   </section>
@@ -101,7 +107,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
       <span class="nav-label">پروژه‌ها</span>
     </a>
-    <a class="nav-item" data-color="#b9feff" href="articles.html">
+    <a class="nav-item is-active" data-color="#b9feff" href="articles.html">
       <span class="nav-ring"></span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
       <span class="nav-label">مقالات</span>
@@ -147,6 +153,6 @@
 
 <script src="js/data-shim.js"></script>
 <script src="js/main.js"></script>
-<script src="js/articles.js"></script>
+<script src="js/search.js"></script>
 </body>
 </html>

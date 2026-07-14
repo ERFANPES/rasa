@@ -4,21 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>پروژه‌ها | رویایی رسا</title>
+<meta name="description" content="پروژه‌های رویایی رسا؛ کارهایی که تیم رسا با عشق ساخته است.">
 <link rel="icon" href="assets/logo/logo-filled-cyan.svg" type="image/svg+xml">
 <link href="assets/vendor/vazirmatn/Vazirmatn-font-face.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/projects.css">
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<main class="articles-page projects-page">
 
-<main class="page-placeholder">
-  <div>
-    <h1>پروژه‌ها</h1>
-    <p>این صفحه به‌زودی تکمیل می‌شود.</p>
+  <!-- ================= هیرو ================= -->
+  <section class="blog-hero">
+    <div class="blog-hero-frame">
+      <img class="blog-hero-img" src="assets/img/blog main.webp" alt="پروژه‌های رویایی رسا" onerror="this.style.display='none'">
+      <h1 class="blog-hero-title">پروژه‌های<br><span>رسا</span></h1>
+    </div>
+  </section>
+
+  <!-- ================= تب‌های دسته‌بندی (بدون تیتل) ================= -->
+  <section class="proj-tabs-section">
+    <div class="proj-tabs" id="projTabs">
+      <div class="proj-tab-skel"></div>
+      <div class="proj-tab-skel"></div>
+      <div class="proj-tab-skel"></div>
+    </div>
+  </section>
+
+  <!-- ================= گزیده‌ی تصادفی پروژه‌ها (بنتو) ================= -->
+  <section class="proj-bento-section" id="projBentoSection">
+    <div class="proj-bento-grid" id="projBentoGrid">
+      <div class="proj-bento-skel bento-a"></div>
+      <div class="proj-bento-skel bento-b"></div>
+      <div class="proj-bento-skel bento-c"></div>
+      <div class="proj-bento-skel bento-d"></div>
+      <div class="proj-bento-skel bento-e"></div>
+    </div>
+  </section>
+
+  <!-- ================= دسته‌ها به‌سبک فروشگاهی (هر دسته یک ردیف اسکرول افقی) ================= -->
+  <section class="proj-groups" id="projGroups"></section>
+
+  <div class="articles-empty" id="projectsEmpty" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
+    <p id="projectsEmptyMsg">هنوز پروژه‌ای منتشر نشده.</p>
   </div>
-</main>
 
+</main>
 
 <nav class="nav-pill" aria-label="ناوبری اصلی">
   <a class="nav-item" data-color="#00ffff" href="index.html">
@@ -31,7 +63,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
       <span class="nav-label">درباره ما</span>
     </a>
-    <a class="nav-item" data-color="#0c8d8d" href="projects.html">
+    <a class="nav-item is-active" data-color="#0c8d8d" href="projects.html">
       <span class="nav-ring"></span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
       <span class="nav-label">پروژه‌ها</span>
@@ -76,11 +108,12 @@
   </div>
   <div class="footer-bottom">
     <span>© ۱۴۰۴ رویایی رسا</span>
-    <span>ساخته‌شده با ❤ برای رویاهای رسا</span>
+    <span>ساخته‌شده با ❤ برای رویاهای رسا</span><a href="admin/index.html" style="color:inherit; opacity:.6; font-size:.8em; margin-inline-start:12px;">پنل مدیریت</a>
   </div>
 </footer>
 
-<script src="assets/vendor/three/three.min.js"></script>
+<script src="js/data-shim.js"></script>
 <script src="js/main.js"></script>
+<script src="js/projects.js"></script>
 </body>
 </html>

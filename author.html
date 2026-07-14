@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مقالات | رویایی رسا</title>
-<meta name="description" content="مقالات رویایی رسا؛ ایده‌ها، تجربه‌ها و روایت‌هایی که رسا بیان می‌شوند.">
+<title id="pageTitle">نویسنده | رویایی رسا</title>
+<meta name="description" id="pageDescription" content="پروفایل و مقالات نویسندگان رویایی رسا">
 <link rel="icon" href="assets/logo/logo-filled-cyan.svg" type="image/svg+xml">
 <link href="assets/vendor/vazirmatn/Vazirmatn-font-face.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/articles.css">
+<link rel="stylesheet" href="css/author.css">
 </head>
 <body>
 
@@ -20,68 +21,69 @@
   </div>
 </header>
 
-<main class="articles-page">
+<main class="articles-page author-page">
 
-  <!-- ================= هیرو : بنر عکس با عنوان روی آن ================= -->
-  <section class="blog-hero">
-    <div class="blog-hero-frame">
-      <img class="blog-hero-img" src="assets/img/blog main.webp" alt="وبلاگ رویایی رسا" onerror="this.style.display='none'">
-      <h1 class="blog-hero-title">وبلاگ<br><span>رسا</span></h1>
-    </div>
-  </section>
+  <div class="author-loading" id="authorLoading">
+    <div class="loading-spinner"></div>
+    <p>در حال بارگذاری پروفایل نویسنده...</p>
+  </div>
 
-  <!-- ================= دسته‌بندی‌ها ================= -->
-  <section class="cat-section">
-    <div class="cat-head">
-      <h2>دسته‌بندی‌ها</h2>
-    </div>
-    <div class="cat-scroller" id="catScroller">
-      <!-- کارت‌های دسته‌بندی توسط articles.js تزریق می‌شوند -->
-      <div class="cat-skel"></div>
-      <div class="cat-skel"></div>
-      <div class="cat-skel"></div>
-    </div>
-  </section>
+  <div class="author-not-found" id="authorNotFound" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
+    <h1>این نویسنده پیدا نشد</h1>
+    <p>ممکن است حذف شده یا آدرس اشتباه باشد.</p>
+    <a href="articles.html" class="pagination-btn">بازگشت به مقالات</a>
+  </div>
 
-  <!-- ================= جدیدترین‌ها : کارت‌های پشته‌ای ================= -->
-  <section class="stack-section">
-    <div class="stack-head">
-      <h2>جدیدترین‌ها</h2>
-      <p>   </p>
-    </div>
-    <div class="stack-wrap" id="stackWrap">
-      <div class="stack-skel"></div>
-    </div>
-  </section>
+  <div id="authorContent" style="display:none;">
 
-  <!-- ================= برترین‌ها : پربازدیدترین مقالات (کارت‌های پشته‌ای) ================= -->
-  <section class="stack-section">
-    <div class="stack-head">
-      <h2>برترین‌ها</h2>
-      <p>   </p>
-    </div>
-    <div class="stack-wrap" id="topStackWrap">
-      <div class="stack-skel"></div>
-    </div>
-  </section>
+    <!-- ================= هیرو نویسنده ================= -->
+    <section class="author-hero" id="authorHero">
+      <div class="author-hero-avatar">
+        <img id="authorHeroAvatarImg" alt="" style="display:none;">
+        <span id="authorHeroInitial"></span>
+      </div>
+      <div class="author-hero-info">
+        <span class="author-hero-label">نویسنده رویایی رسا</span>
+        <h1 class="author-hero-name" id="authorHeroName"></h1>
+        <p class="author-hero-bio" id="authorHeroBio"></p>
+        <div class="author-hero-meta">
+          <span id="authorHeroArticleCount"></span>
+          <span id="authorHeroViews"></span>
+        </div>
+        <div class="author-hero-socials" id="authorHeroSocials"></div>
+      </div>
+    </section>
 
-  <!-- ================= وبلاگ : لیست کامل مقالات ================= -->
-  <section class="blog-list-section">
-    <div class="blog-list-head">
-      <h2>وبلاگ</h2>
-    </div>
-    <div class="blog-list" id="blogList">
-      <div class="list-skel"></div>
-      <div class="list-skel"></div>
-      <div class="list-skel"></div>
-    </div>
-    <div class="articles-empty" id="articlesEmpty" style="display:none;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
-      <p id="articlesEmptyMsg">مقاله‌ای با این مشخصات پیدا نشد.</p>
-      <button id="clearFiltersBtn" class="pagination-btn">پاک‌کردن فیلترها</button>
-    </div>
-    <nav class="pagination" id="pagination" style="display:none;"></nav>
-  </section>
+    <!-- ================= مقالات نویسنده ================= -->
+    <section class="blog-list-section">
+      <div class="blog-list-head author-list-head">
+        <h2>مقالات نویسنده</h2>
+        <div class="author-sort">
+          <label for="authorSortSelect">مرتب‌سازی</label>
+          <select id="authorSortSelect">
+            <option value="newest">جدیدترین</option>
+            <option value="views">پربازدیدترین</option>
+            <option value="reading_time">کوتاه‌ترین زمان مطالعه</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="blog-list" id="authorArticlesList">
+        <div class="list-skel"></div>
+        <div class="list-skel"></div>
+        <div class="list-skel"></div>
+      </div>
+
+      <div class="articles-empty" id="authorArticlesEmpty" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+        <p>هنوز مقاله‌ای از این نویسنده منتشر نشده است.</p>
+      </div>
+
+      <nav class="pagination" id="authorPagination" style="display:none;"></nav>
+    </section>
+
+  </div>
 
 </main>
 
@@ -147,6 +149,6 @@
 
 <script src="js/data-shim.js"></script>
 <script src="js/main.js"></script>
-<script src="js/articles.js"></script>
+<script src="js/author.js"></script>
 </body>
 </html>
