@@ -52,10 +52,11 @@ function initCaptchaRefresh() {
   if (!img || !btn) return;
 
   const refresh = () => {
-    img.src = "api/captcha.php?t=" + Date.now();
+    if (window.RESA_CAPTCHA) img.src = window.RESA_CAPTCHA.image("contact");
   };
   btn.addEventListener("click", refresh);
   window.refreshContactCaptcha = refresh;
+  refresh();
 }
 
 /* ---------------------------------------------------------

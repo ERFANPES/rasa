@@ -22,20 +22,15 @@
          category_slug, category_name, category_description,
          published_at, reading_time }
 
-   ⚠️ MOCK DATA:
-   چون بک‌اند هنوز آماده نیست، اگر fetch با خطا مواجه شود
-   (یا فایل به‌صورت محلی باز شود)، به‌صورت خودکار از داده‌ی
-   نمونه‌ی پایین فایل استفاده می‌شود تا طراحی قابل پیش‌نمایش
-   باشد. وقتی بک‌اند واقعی جواب داد، این fallback به‌طور خودکار
-   دیگر استفاده نمی‌شود و لازم نیست چیزی حذف کنید.
+   یادداشت: این فایل دیگر داده‌ی نمونه (mock) ندارد. اگر درخواست به
+   بک‌اند با خطا مواجه شود، به‌جای نمایش داده‌ی ساختگی، پیام خطای
+   واقعی به کاربر نشان داده می‌شود (به تابع fetchJSON مراجعه کنید).
    =========================================================== */
 /* ===========================================================
    articles.js — منطق صفحه‌ی مقالات (نسخه دسکتاپ و موبایل)
    =========================================================== */
    (function () {
     "use strict";
-  
-    const PAGE_SIZE = 10;
   
     let state = { page: 1, q: "", category: "" };
     let categories = [];
@@ -50,7 +45,8 @@
   
       wireSearch();
       loadTaxonomy();
-      loadStack();
+      loadStack("stackWrap", "api/articles_list.php?stack=1&limit=5");
+      loadStack("topStackWrap", "api/articles_list.php?top=1&limit=5");
       loadBlogList();
   
       document.getElementById("clearFiltersBtn")?.addEventListener("click", () => {
@@ -68,33 +64,41 @@
       return div.innerHTML;
     }
   
-    async function fetchJSON(url, mockFallback) {
+    async function fetchJSON(url) {
       try {
         const res = await fetch(url);
-        if (!res.ok) throw new Error("bad status");
+        if (!res.ok) throw new Error("bad status " + res.status);
         const data = await res.json();
         if (!data.ok) throw new Error(data.message || "bad response");
         return data.data;
       } catch (e) {
-        console.info("[articles.js] استفاده از داده‌ی نمونه برای:", url);
-        return mockFallback;
+        console.error("[articles.js] خطا در دریافت اطلاعات از سرور:", url, e);
+        return null;
       }
     }
   
     /* -------------------- جستجو (هدر ثابت) -------------------- */
+    function goToSearch() {
+      const input = document.getElementById("searchInput");
+      const q = (input?.value || "").trim();
+      const params = new URLSearchParams();
+      if (q) params.set("q", q);
+      window.location.href = "search.html" + (params.toString() ? "?" + params.toString() : "");
+    }
+
     function wireSearch() {
       const input = document.getElementById("searchInput");
       const header = document.getElementById("searchHeader");
+      const icon = header?.querySelector("svg");
   
-      let debounce;
-      input?.addEventListener("input", () => {
-        clearTimeout(debounce);
-        debounce = setTimeout(() => {
-          state.q = input.value.trim();
-          state.page = 1;
-          loadBlogList();
-        }, 400);
+      input?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          goToSearch();
+        }
       });
+      icon?.addEventListener("click", goToSearch);
+      if (icon) icon.style.cursor = "pointer";
   
       let lastY = window.scrollY;
       let ticking = false;
@@ -118,14 +122,26 @@
   
     /* -------------------- دسته‌بندی‌ها -------------------- */
     async function loadTaxonomy() {
-      const data = await fetchJSON("api/taxonomy_list.php", { categories: MOCK_CATEGORIES });
+      const scroller = document.getElementById("catScroller");
+      const data = await fetchJSON("api/taxonomy_list.php");
+      if (!data) {
+        scroller.innerHTML = '<p class="cat-error">خطا در دریافت دسته‌بندی‌ها از سرور.</p>';
+        return;
+      }
       categories = (data.categories || []).filter((c) => !c.parent_id);
       renderCategories();
     }
   
     function categoryVisual(cat) {
-      const icon = cat.icon && ICONS[cat.icon] ? ICONS[cat.icon] : (ICONS[cat.slug] || ICONS.default);
       const color = cat.color || COLORS[cat.slug] || "var(--c-teal)";
+      // اگر آیکون واقعی از پنل ادمین آپلود شده باشد (مسیر فایل)، همان تصویر نمایش داده می‌شود
+      if (cat.icon && (cat.icon.startsWith("assets/") || /^https?:\/\//.test(cat.icon))) {
+        return {
+          icon: `<img src="${cat.icon}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`,
+          color,
+        };
+      }
+      const icon = cat.icon && ICONS[cat.icon] ? ICONS[cat.icon] : (ICONS[cat.slug] || ICONS.default);
       return { icon, color };
     }
   
@@ -207,11 +223,17 @@
     /* -----------------------------------------------------------
        جدیدترین‌ها — انیمیشن پشته سه بعدی (همواره صعودی رو به بالا)
     ----------------------------------------------------------- */
-    async function loadStack() {
-      const wrap = document.getElementById("stackWrap");
-      const data = await fetchJSON("api/articles_list.php?stack=1&limit=5", { articles: MOCK_STACK });
+    async function loadStack(wrapId, url) {
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+      const section = wrap.closest(".stack-section");
+      const data = await fetchJSON(url);
+      if (!data) {
+        section?.style.setProperty("display", "none");
+        return;
+      }
       const list = data.articles || [];
-      if (!list.length) { wrap.innerHTML = ""; return; }
+      if (!list.length) { section?.style.setProperty("display", "none"); return; }
   
       wrap.innerHTML = list
         .map((article) => `<div class="stack-card2">${articleCardHtml(article)}</div>`)
@@ -265,6 +287,7 @@
     async function loadBlogList() {
       const listEl = document.getElementById("blogList");
       const emptyEl = document.getElementById("articlesEmpty");
+      const emptyMsgEl = document.getElementById("articlesEmptyMsg");
       const paginationEl = document.getElementById("pagination");
   
       listEl.innerHTML = '<div class="list-skel"></div><div class="list-skel"></div><div class="list-skel"></div>';
@@ -275,17 +298,28 @@
       if (state.q) params.set("q", state.q);
       if (state.category) params.set("category", state.category);
   
-      const mock = mockPage(state.page, state.q, state.category);
-      const data = await fetchJSON("api/articles_list.php?" + params.toString(), mock);
+      const data = await fetchJSON("api/articles_list.php?" + params.toString());
+
+      if (!data) {
+        listEl.innerHTML = "";
+        paginationEl.style.display = "none";
+        emptyMsgEl.textContent = "خطا در برقراری ارتباط با سرور. لطفاً بعداً دوباره تلاش کنید.";
+        document.getElementById("clearFiltersBtn").style.display = "none";
+        emptyEl.style.display = "block";
+        return;
+      }
+
       const list = data.articles || [];
-  
+
       if (!list.length) {
         listEl.innerHTML = "";
+        emptyMsgEl.textContent = "مقاله‌ای با این مشخصات پیدا نشد.";
+        document.getElementById("clearFiltersBtn").style.display = "";
         emptyEl.style.display = "block";
         paginationEl.style.display = "none";
         return;
       }
-  
+
       listEl.innerHTML = list.map(articleCardHtml).join("");
       renderPagination(data.page || state.page, data.total_pages || 1);
     }
@@ -323,50 +357,4 @@
       raysanes: "var(--cat-c)",
     };
   
-    const MOCK_CATEGORIES = [
-      { id: 1, slug: "rasa", name: "رسا", description: "محتوای داخلی رسا", parent_id: null },
-      { id: 2, slug: "rasabaz", name: "رساباز", description: "محتوای بازی‌های ویدیویی", parent_id: null },
-      { id: 3, slug: "raysanes", name: "رساینس", description: "محتوای جهان علم", parent_id: null },
-    ];
-  
-    function mockArticle(i, categoryIndex) {
-      const cat = MOCK_CATEGORIES[categoryIndex % MOCK_CATEGORIES.length];
-      const authors = ["عرفان سعادتی منعم", "نگار احمدی", "سام رستمی"];
-      const author = authors[i % authors.length];
-      return {
-        slug: `article-${i}`,
-        title:
-          i % 3 === 0
-            ? "بازی‌های ویدیویی؛ سرگرمی یا فرصتی برای یادگیری؟"
-            : i % 3 === 1
-            ? "چطور یک روتین محتوایی پایدار برای وبلاگ بسازیم"
-            : "روایت رسا از پروژه‌ای که همه چیز را تغییر داد",
-        excerpt:
-          "خیلی از ما وقتی اسمِ این موضوع را می‌شنویم، یاد ساعت‌ها نشستن پای صفحه می‌افتیم؛ اما واقعیت این است که ماجرا خیلی فراتر از این حرف‌هاست...",
-        cover_image: `https://picsum.photos/seed/rasa-${i}/700/900`,
-        author,
-        author_avatar: `https://ui-avatars.com/api/?background=0c8d8d&color=fff&name=${encodeURIComponent(author)}`,
-        category_slug: cat.slug,
-        category_name: cat.name,
-        category_description: cat.description,
-        published_at: `1404-04-${String((i % 28) + 1).padStart(2, "0")}`,
-        reading_time: 3 + (i % 6),
-      };
-    }
-  
-    const MOCK_STACK = [0, 1, 2, 3].map((i) => mockArticle(i, i));
-    const MOCK_ALL = Array.from({ length: 24 }, (_, i) => mockArticle(i + 4, i));
-  
-    function mockPage(page, q, category) {
-      let list = MOCK_ALL;
-      if (category) list = list.filter((a) => a.category_slug === category);
-      if (q) list = list.filter((a) => a.title.includes(q) || a.excerpt.includes(q));
-      const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-      const start = (page - 1) * PAGE_SIZE;
-      return {
-        articles: list.slice(start, start + PAGE_SIZE),
-        page,
-        total_pages: totalPages,
-      };
-    }
   })();
