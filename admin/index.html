@@ -4,123 +4,416 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>پنل مدیریت — رویایی رسا (نسخه دمو)</title>
+<title>پنل مدیریت | رویایی رسا</title>
 <link rel="icon" href="../assets/logo/logo-filled-cyan.svg">
 <link rel="stylesheet" href="../assets/vendor/vazirmatn/Vazirmatn-font-face.css">
-<link rel="stylesheet" href="assets/admin-static.css">
+<link rel="stylesheet" href="assets/admin.css">
 </head>
-<body>
+<body class="login-body" id="pageBody">
 
 <!-- ===================== صفحه ورود ===================== -->
-<div id="loginScreen" class="login-screen">
+<div class="login-wrap" id="loginScreen">
   <div class="login-card">
-    <img src="../assets/logo/logo-filled-cyan.svg" alt="رویایی رسا" class="login-logo">
+    <img class="login-logo" src="../assets/logo/logo-filled-cyan.svg" alt="رویایی رسا">
     <h1>ورود به پنل مدیریت</h1>
-    <p class="login-sub">نسخه‌ی دمو — بدون بک‌اند واقعی</p>
+    <p class="login-sub">رویایی رسا</p>
 
-    <div class="demo-note">
-      <strong>حالت نمایشی:</strong> این پنل روی داده‌ی نمونه و
-      <code>localStorage</code> همین مرورگر کار می‌کند (بدون سرور واقعی).
-      تغییرات فقط برای شما و در همین مرورگر باقی می‌مانند و با پاک کردن
-      Local Storage یا رفرش‌های عادی از بین نمی‌روند، اما جایی ارسال نمی‌شوند.<br>
-      نام کاربری: <code>admin</code> — رمز عبور: <code>demo1234</code>
+    <div class="alert" style="background:var(--c-mist); border:1.5px dashed var(--border-mid); color:var(--text-mute); font-size:.8rem; line-height:1.9; text-align:right; border-radius:var(--radius-md); padding:.85rem 1rem; margin-bottom:1.2rem;">
+      این پنل نسخه‌ی <strong>دموی نمونه‌کار</strong> است و به سرور واقعی وصل نیست؛ همه‌چیز روی <code>localStorage</code> همین مرورگر شما کار می‌کند.<br>
+      برای ورود از نام کاربری <code>admin</code> و رمز عبور <code>demo1234</code> استفاده کنید.
     </div>
 
-    <form id="loginForm" autocomplete="off">
-      <label>نام کاربری
-        <input type="text" id="loginUser" value="admin" required>
-      </label>
-      <label>رمز عبور
-        <input type="password" id="loginPass" value="demo1234" required>
-      </label>
-      <button type="submit" class="btn btn-primary btn-block">ورود</button>
-      <p id="loginError" class="form-error"></p>
-    </form>
+    <div class="alert alert-error hidden" id="loginError"></div>
 
-    <a href="../index.html" class="back-to-site">← بازگشت به سایت</a>
+    <form id="loginForm" autocomplete="off">
+      <label>نام کاربری</label>
+      <input type="text" id="loginUser" value="admin" required autofocus>
+      <label>رمز عبور</label>
+      <input type="password" id="loginPass" value="demo1234" required>
+      <button type="submit">ورود</button>
+    </form>
   </div>
 </div>
 
-<div id="sidebarBackdrop" class="sidebar-backdrop"></div>
-
 <!-- ===================== پنل اصلی ===================== -->
-<div id="app" class="app hidden">
-  <aside class="sidebar" id="sidebar">
+<div class="admin-shell hidden" id="app">
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <aside class="admin-sidebar" id="sidebar">
     <div class="sidebar-brand">
       <img src="../assets/logo/logo-filled-cyan.svg" alt="رویایی رسا">
-      <span>پنل مدیریت</span>
+      <span>رسا</span>
     </div>
-    <nav class="side-nav">
-      <button class="side-link is-active" data-view="dashboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
-        داشبورد
+
+    <nav class="sidebar-nav">
+      <button class="side-tab is-active" data-tab="messages" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4.5 7 12 13l7.5-6"/></svg>
+        <span>پیام‌ها</span>
+        <span class="badge-unread" id="sidebarUnreadBadge" style="display:none;"></span>
       </button>
-      <button class="side-link" data-view="articles">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        مقالات
-        <span class="side-badge" id="badgeArticles"></span>
+      <button class="side-tab" data-tab="projects" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
+        <span>پروژه‌ها</span>
       </button>
-      <button class="side-link" data-view="projects">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        پروژه‌ها
-        <span class="side-badge" id="badgeProjects"></span>
+      <button class="side-tab" data-tab="articles" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+        <span>مقالات</span>
       </button>
-      <button class="side-link" data-view="comments">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
-        نظرات
-        <span class="side-badge" id="badgeComments"></span>
+      <button class="side-tab" data-tab="comments" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h16v12H8.5L4 20.5v-4H4z"/><path d="M8 9.5h8M8 13h5"/></svg>
+        <span>نظرات کاربران</span>
+        <span class="badge-unread" id="sidebarCommentsBadge" style="display:none;"></span>
       </button>
-      <button class="side-link" data-view="messages">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        پیام‌ها
-        <span class="side-badge" id="badgeMessages"></span>
-      </button>
-      <div class="side-sep"></div>
-      <button class="side-link" data-view="categories">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
-        دسته‌بندی‌ها
-      </button>
-      <button class="side-link" data-view="tags">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24L3 3l.24 6.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.82z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>
-        تگ‌ها
-      </button>
-      <button class="side-link" data-view="team">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        تیم و مدیران
-      </button>
-      <button class="side-link" data-view="settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        تنظیمات
+      <button class="side-tab" data-tab="settings" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13a7.7 7.7 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.3-.9-2 3.4L6.6 11a7.7 7.7 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.3.9 2-3.4-2-1.5Z"/></svg>
+        <span>تنظیمات</span>
       </button>
     </nav>
-    <a href="../index.html" class="side-link side-link--muted">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
-      مشاهده سایت
-    </a>
+
+    <div class="sidebar-footer">
+      <div class="current-admin">
+        <span class="dot"></span>
+        <span id="currentAdminName">—</span>
+        <span class="role-badge role-badge--super_admin">سوپر ادمین</span>
+      </div>
+      <a class="logout-btn" href="#" id="logoutBtn">خروج</a>
+    </div>
   </aside>
 
-  <div class="main-col">
-    <header class="topbar">
-      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="منو">☰</button>
-      <h2 id="viewTitle">داشبورد</h2>
-      <div class="topbar-right">
-        <span class="demo-pill">حالت نمایشی</span>
-        <span class="admin-name" id="currentAdminName">—</span>
-        <button id="logoutBtn" class="btn btn-ghost btn-sm">خروج</button>
-      </div>
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="منو">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <h1 id="topbarTitle">پیام‌های تماس با ما</h1>
     </header>
 
-    <main class="view-area" id="viewArea"><!-- محتوای هر تب اینجا رندر می‌شود --></main>
-  </div>
+    <!-- ================= تب پیام‌ها ================= -->
+    <section class="tab-panel is-active" id="tab-messages">
+      <div class="panel-toolbar">
+        <div class="stat-chip">تعداد کل: <b id="msgTotalCount">۰</b></div>
+        <div class="stat-chip stat-chip--accent">خوانده‌نشده: <b id="msgUnreadCount">۰</b></div>
+        <button class="btn-ghost" id="refreshMessagesBtn" type="button">بروزرسانی</button>
+      </div>
+      <div class="messages-list" id="messagesList">
+        <div class="empty-state">در حال بارگذاری پیام‌ها...</div>
+      </div>
+    </section>
+
+    <!-- ================= تب پروژه‌ها ================= -->
+    <section class="tab-panel" id="tab-projects">
+      <div class="panel-toolbar">
+        <div class="stat-chip">تعداد کل: <b id="projTotalCount">۰</b></div>
+        <div class="stat-chip stat-chip--accent">منتشر شده: <b id="projPublishedCount">۰</b></div>
+        <div class="stat-chip">پیش‌نویس: <b id="projDraftCount">۰</b></div>
+        <button class="btn-ghost" id="manageProjectCategoriesBtn" type="button">مدیریت دسته‌بندی‌های پروژه</button>
+        <button class="btn-primary" id="newProjectBtn" type="button">+ پروژه جدید</button>
+      </div>
+      <div class="articles-filters">
+        <input type="search" id="projectSearchInput" placeholder="جستجو در عنوان پروژه...">
+        <select id="projectCategoryFilter"><option value="">همه دسته‌بندی‌ها</option></select>
+        <select id="projectStatusFilter">
+          <option value="">همه وضعیت‌ها</option>
+          <option value="published">منتشر شده</option>
+          <option value="draft">پیش‌نویس</option>
+        </select>
+      </div>
+      <div class="projects-grid-admin" id="projectsGridAdmin">
+        <div class="empty-state">در حال بارگذاری پروژه‌ها...</div>
+      </div>
+    </section>
+
+    <!-- ================= تب مقالات ================= -->
+    <section class="tab-panel" id="tab-articles">
+      <div class="panel-toolbar">
+        <div class="stat-chip">تعداد کل: <b id="artTotalCount">۰</b></div>
+        <div class="stat-chip stat-chip--accent">منتشر شده: <b id="artPublishedCount">۰</b></div>
+        <div class="stat-chip">پیش‌نویس: <b id="artDraftCount">۰</b></div>
+        <button class="btn-ghost" id="manageCategoriesBtn" type="button">مدیریت دسته‌بندی‌ها</button>
+        <button class="btn-primary" id="newArticleBtn" type="button">+ مقاله جدید</button>
+      </div>
+      <div class="articles-filters">
+        <input type="search" id="articleSearchInput" placeholder="جستجو در عنوان یا نویسنده...">
+        <select id="articleCategoryFilter"><option value="">همه دسته‌بندی‌ها</option></select>
+        <select id="articleStatusFilter">
+          <option value="">همه وضعیت‌ها</option>
+          <option value="published">منتشر شده</option>
+          <option value="draft">پیش‌نویس</option>
+        </select>
+      </div>
+      <div class="articles-table-wrap">
+        <table class="articles-table" id="articlesTable">
+          <thead>
+            <tr>
+              <th></th><th>عنوان</th><th>دسته‌بندی</th><th>نویسنده</th>
+              <th>وضعیت</th><th>تاریخ انتشار</th><th>بازدید</th><th>عملیات</th>
+            </tr>
+          </thead>
+          <tbody><tr><td colspan="8" class="empty-state">در حال بارگذاری مقالات...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= تب نظرات کاربران ================= -->
+    <section class="tab-panel" id="tab-comments">
+      <div class="panel-toolbar">
+        <div class="stat-chip">تعداد کل: <b id="cmTotalCount">۰</b></div>
+        <div class="stat-chip stat-chip--accent">در انتظار تایید: <b id="cmPendingCount">۰</b></div>
+        <div class="stat-chip">تاییدشده: <b id="cmApprovedCount">۰</b></div>
+        <button class="btn-ghost" id="refreshCommentsBtn" type="button">بروزرسانی</button>
+      </div>
+      <div class="articles-filters">
+        <input type="search" id="commentSearchInput" placeholder="جستجو در متن نظر، نام کاربر یا عنوان مقاله...">
+        <select id="commentStatusFilter">
+          <option value="">همه وضعیت‌ها</option>
+          <option value="pending">در انتظار تایید</option>
+          <option value="approved">تاییدشده</option>
+          <option value="rejected">رد شده</option>
+        </select>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <div class="empty-state">در حال بارگذاری نظرات...</div>
+      </div>
+    </section>
+
+    <!-- ================= تب تنظیمات ================= -->
+    <section class="tab-panel" id="tab-settings">
+      <div class="ios-settings" id="iosSettings">
+
+        <div class="ios-settings-list" id="settingsList">
+          <div class="ios-row-group">
+            <button type="button" class="ios-row" data-subtab="profile">
+              <span class="ios-row-icon ios-icon-blue">👤</span>
+              <span class="ios-row-text">
+                <span class="ios-row-title">پروفایل و امنیت</span>
+                <span class="ios-row-sub">اطلاعات شخصی، شبکه‌های اجتماعی و رمز عبور</span>
+              </span>
+              <span class="ios-row-chevron">‹</span>
+            </button>
+            <button type="button" class="ios-row" data-subtab="admins">
+              <span class="ios-row-icon ios-icon-purple">🛡️</span>
+              <span class="ios-row-text">
+                <span class="ios-row-title">ادمین‌ها</span>
+                <span class="ios-row-sub">افزودن، ویرایش و مدیریت دسترسی ادمین‌ها</span>
+              </span>
+              <span class="ios-row-chevron">‹</span>
+            </button>
+          </div>
+          <div class="ios-row-group">
+            <button type="button" class="ios-row" data-subtab="site">
+              <span class="ios-row-icon ios-icon-teal">⚙️</span>
+              <span class="ios-row-text">
+                <span class="ios-row-title">سایت</span>
+                <span class="ios-row-sub">تایید نظرات و حالت تعمیرات</span>
+              </span>
+              <span class="ios-row-chevron">‹</span>
+            </button>
+            <button type="button" class="ios-row" data-subtab="stats">
+              <span class="ios-row-icon ios-icon-orange">📊</span>
+              <span class="ios-row-text">
+                <span class="ios-row-title">آمار و گزارش</span>
+                <span class="ios-row-sub">آمار بازدید سایت و گزارش فعالیت‌ها</span>
+              </span>
+              <span class="ios-row-chevron">‹</span>
+            </button>
+            <button type="button" class="ios-row" data-subtab="backup">
+              <span class="ios-row-icon ios-icon-gray">🗄️</span>
+              <span class="ios-row-text">
+                <span class="ios-row-title">پشتیبان‌گیری</span>
+                <span class="ios-row-sub">دانلود و بازیابی نسخه پشتیبان داده‌های دمو</span>
+              </span>
+              <span class="ios-row-chevron">‹</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="ios-settings-detail" id="settingsDetail">
+          <div class="ios-detail-header">
+            <button type="button" class="ios-back-btn" id="settingsBackBtn">بازگشت</button>
+            <h3 class="ios-detail-title" id="settingsDetailTitle"></h3>
+          </div>
+          <div class="ios-detail-body">
+
+            <div class="settings-subpanel" data-subtab-panel="profile">
+              <div class="settings-block">
+                <h2>پروفایل من</h2>
+                <p class="settings-desc">بیوگرافی خلاصه در کارت نویسنده زیر مقالات نمایش داده می‌شود؛ بیوگرافی مفصل در صفحه اختصاصی خودتان.</p>
+                <div class="profile-form">
+                  <div class="profile-avatar-col">
+                    <div class="cover-drop cover-drop--round" id="profileAvatarDrop">
+                      <img id="profileAvatarPreview" alt="عکس پروفایل" style="display:none;">
+                      <span id="profileAvatarPlaceholder">آپلود عکس</span>
+                    </div>
+                  </div>
+                  <div class="profile-fields-col">
+                    <label class="field-label">نام نمایشی</label>
+                    <input type="text" id="profileDisplayName" placeholder="نام و نام خانوادگی" maxlength="100">
+                    <label class="field-label">بیوگرافی خلاصه</label>
+                    <textarea id="profileBioShort" rows="2" maxlength="240"></textarea>
+                    <label class="field-label">بیوگرافی مفصل</label>
+                    <textarea id="profileBioFull" rows="6" maxlength="4000"></textarea>
+                    <div class="profile-socials-grid">
+                      <div><label class="field-label">تلگرام</label><input type="text" id="profileTelegram" placeholder="@username"></div>
+                      <div><label class="field-label">اینستاگرام</label><input type="text" id="profileInstagram" placeholder="@username"></div>
+                      <div><label class="field-label">ایمیل</label><input type="email" id="profileEmail" placeholder="name@example.com"></div>
+                      <div><label class="field-label">شماره تماس</label><input type="text" id="profilePhone" placeholder="09xxxxxxxxx"></div>
+                      <div><label class="field-label">لینکدین</label><input type="text" id="profileLinkedin" placeholder="لینک پروفایل"></div>
+                      <div><label class="field-label">ایکس (X)</label><input type="text" id="profileX" placeholder="@username"></div>
+                    </div>
+                    <button type="button" class="btn-primary" id="saveProfileBtn">ذخیره پروفایل</button>
+                    <div class="form-msg" id="profileMsg"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-block">
+                <h2>تغییر رمز عبور من</h2>
+                <form class="inline-form inline-form--column" id="changePasswordForm">
+                  <input type="password" name="current_password" placeholder="رمز عبور فعلی (دمو: demo1234)" required>
+                  <input type="password" name="new_password" placeholder="رمز عبور جدید (حداقل ۸ کاراکتر)" required minlength="8">
+                  <button type="submit" class="btn-primary">تغییر رمز عبور</button>
+                </form>
+                <div class="form-msg" id="changePasswordMsg"></div>
+              </div>
+            </div>
+
+            <div class="settings-subpanel" data-subtab-panel="admins">
+              <div class="settings-block">
+                <h2>مدیریت ادمین‌ها</h2>
+                <p class="settings-desc">افزودن ادمین جدید و تعیین دسترسی‌های دقیق او.</p>
+                <form class="admin-form-grid" id="addAdminForm">
+                  <div class="admin-form-row">
+                    <label class="field-label" for="newAdminUsername">نام کاربری</label>
+                    <p class="field-desc">نام کاربری منحصربه‌فرد برای ورود به پنل</p>
+                    <input type="text" id="newAdminUsername" class="field-control" placeholder="مثلاً: reza_ahmadi" required minlength="3" maxlength="60">
+                  </div>
+                  <div class="admin-form-row">
+                    <label class="field-label" for="newAdminPassword">رمز عبور</label>
+                    <p class="field-desc">حداقل ۸ کاراکتر شامل حروف و اعداد</p>
+                    <input type="password" id="newAdminPassword" class="field-control" placeholder="رمز عبور جدید" required minlength="8">
+                  </div>
+                  <div class="admin-form-row">
+                    <label class="field-label" for="newAdminRole">نقش ادمین</label>
+                    <p class="field-desc">انتخاب نقش پایه</p>
+                    <select id="newAdminRole" class="field-control">
+                      <option value="admin">ادمین (دسترسی سفارشی)</option>
+                      <option value="super_admin">سوپر ادمین (دسترسی کامل)</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn-primary" style="align-self:flex-start;">افزودن ادمین</button>
+                </form>
+                <div class="form-msg" id="addAdminMsg"></div>
+                <div class="admins-table-wrap">
+                  <table class="admins-table" id="adminsTable">
+                    <thead><tr><th>نام کاربری</th><th>نقش</th><th>تاریخ ساخت</th><th>عملیات</th></tr></thead>
+                    <tbody><tr><td colspan="4" class="empty-state">در حال بارگذاری...</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-subpanel" data-subtab-panel="site">
+              <div class="settings-block">
+                <h2>تنظیمات نظرات کاربران</h2>
+                <p class="settings-desc">تعیین کنید نظرات جدید کاربران به‌صورت خودکار منتشر شوند یا نیاز به تایید ادمین داشته باشند.</p>
+                <label class="perm-check">
+                  <span class="perm-check-text">نظرات کاربران بدون نیاز به تایید، به‌صورت خودکار منتشر شوند</span>
+                  <input type="checkbox" id="commentsAutoApproveToggle">
+                </label>
+              </div>
+              <div class="settings-block">
+                <h2>حالت تعمیرات سایت</h2>
+                <p class="settings-desc">وقتی این گزینه روشن باشد، به‌جای صفحات سایت، صفحه «در حال تعمیر» به بازدیدکنندگان نمایش داده می‌شود.</p>
+                <label class="perm-check maintenance-toggle-row">
+                  <span class="perm-check-text">فعال‌سازی حالت تعمیرات برای همه بازدیدکنندگان</span>
+                  <input type="checkbox" id="maintenanceModeToggle">
+                </label>
+                <label class="field-label" style="display:block; margin-top:1rem;">پیام نمایشی در صفحه تعمیرات (اختیاری)</label>
+                <textarea id="maintenanceMessageInput" class="settings-textarea" rows="3" maxlength="600" placeholder="مثلاً: در حال انجام یک سری بروزرسانی هستیم..."></textarea>
+                <button type="button" class="btn-primary" id="saveMaintenanceBtn" style="margin-top:.9rem;">ذخیره تنظیمات تعمیرات</button>
+                <div class="form-msg" id="maintenanceMsg"></div>
+              </div>
+            </div>
+
+            <div class="settings-subpanel" data-subtab-panel="stats">
+              <div class="settings-block">
+                <h2>آمار بازدید سایت</h2>
+                <p class="settings-desc">آمار ساده بازدید صفحات سایت، بر اساس بارگذاری صفحه در مرورگر بازدیدکنندگان.</p>
+                <div class="stat-cards-grid" id="visitStatsCards"><div class="empty-state">در حال بارگذاری آمار...</div></div>
+                <div class="visit-chart-wrap" id="visitChart"></div>
+                <div class="top-pages-wrap" id="topPagesList"></div>
+              </div>
+              <div class="settings-block">
+                <h2>گزارش فعالیت‌ها (لاگ)</h2>
+                <p class="settings-desc">آخرین رویدادهای امنیتی و مدیریتی پنل ادمین.</p>
+                <div class="activity-log-list" id="activityLogList"><div class="empty-state">در حال بارگذاری گزارش...</div></div>
+              </div>
+            </div>
+
+            <div class="settings-subpanel" data-subtab-panel="backup">
+              <div class="settings-block">
+                <h2>پشتیبان‌گیری از داده‌های دمو</h2>
+                <p class="settings-desc">یک فایل JSON شامل تمام داده‌های فعلی دمو (مقالات، پروژه‌ها، نظرات، پیام‌ها و تنظیمات) بسازید و دانلود کنید.</p>
+                <button type="button" class="btn-primary" id="downloadBackupBtn">دانلود فایل پشتیبان (JSON)</button>
+                <div class="form-msg" id="backupMsg"></div>
+              </div>
+              <div class="settings-block">
+                <h2>بازیابی از فایل پشتیبان</h2>
+                <p class="settings-desc">یک فایل پشتیبان JSON (خروجی همین بخش) را انتخاب کنید تا داده‌های دمو با آن جایگزین شود.</p>
+                <form class="inline-form inline-form--column" id="restoreBackupForm">
+                  <input type="file" id="restoreBackupFile" accept=".json" required>
+                  <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,#e0453f,#b8322d);">بازیابی از فایل پشتیبان</button>
+                </form>
+                <div class="form-msg" id="restoreBackupMsg"></div>
+              </div>
+              <div class="settings-block">
+                <h2>بازنشانی داده‌های دمو</h2>
+                <p class="settings-desc">تمام تغییراتی که در این پنل انجام داده‌اید را به حالت اولیه‌ی دمو برگردانید.</p>
+                <button type="button" class="btn-primary" id="resetDemoBtn" style="background:linear-gradient(135deg,#e0453f,#b8322d);">بازنشانی داده‌های دمو</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <!-- مودال عمومی (ویرایش/جزئیات) -->
-<div id="modalOverlay" class="modal-overlay hidden">
+<div class="modal-backdrop" id="modalOverlay">
   <div class="modal-box" id="modalBox"></div>
 </div>
 
-<div id="toast" class="toast hidden"></div>
+<!-- مودال مشاهده پیام -->
+<div class="modal-backdrop" id="messageModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" id="modalCloseBtn" type="button" aria-label="بستن">&times;</button>
+    <h3 id="modalSenderName"></h3>
+    <div class="modal-meta" id="modalMeta"></div>
+    <p class="modal-message-text" id="modalMessageText"></p>
+  </div>
+</div>
 
-<script src="assets/admin-static.js"></script>
+<!-- مودال پاسخ به نظر کاربر -->
+<div class="modal-backdrop" id="commentReplyModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" id="commentReplyCloseBtn" type="button" aria-label="بستن">&times;</button>
+    <h3>پاسخ به نظر</h3>
+    <p class="modal-meta" id="commentReplyTarget"></p>
+    <p class="modal-message-text" id="commentReplyOriginalText"></p>
+    <form id="commentReplyForm">
+      <textarea id="commentReplyText" rows="4" maxlength="2000" placeholder="پاسخ خود را بنویسید..." style="width:100%; margin-top:1rem; padding:.7rem .9rem; border-radius:14px; border:1.5px solid var(--border-soft); font-family:inherit; font-size:.9rem; resize:vertical; outline:none;" required></textarea>
+      <button type="submit" class="btn-primary" style="margin-top:.9rem; width:100%;">ارسال پاسخ</button>
+    </form>
+    <div class="form-msg" id="commentReplyMsg"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/admin.js"></script>
 </body>
 </html>
