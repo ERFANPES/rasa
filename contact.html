@@ -148,7 +148,6 @@
 
       <form id="contactForm" class="c2-form" novalidate>
 
-        <!-- Honeypot: فیلد مخفی ضد ربات -->
         <div class="hp-field" aria-hidden="true">
           <label for="website">Website</label>
           <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
@@ -185,7 +184,7 @@
         <div class="c2-field c2-field--full c2-captcha-field">
           <label for="captchaInput">کد امنیتی</label>
           <div class="c2-captcha-row">
-            <img id="captchaImg" class="c2-captcha-img" alt="کد امنیتی تصویری">
+            <img id="captchaImg" class="c2-captcha-img" src="api/captcha.php" alt="کد امنیتی تصویری">
             <button type="button" class="c2-captcha-refresh" id="captchaRefresh" title="تولید کد جدید" aria-label="تولید کد جدید">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8 8 0 1 0 18.7 16"/><path d="M20 5v6h-6"/></svg>
             </button>
@@ -210,7 +209,6 @@
       <span class="c2-eyebrow">موقعیت مکانی</span>
       <h2 class="c2-section-title">ما را روی نقشه پیدا کن</h2>
     </div>
-    <!-- نقشه: فعلاً روی شهر اراک، بعداً با مختصات دقیق‌تر جایگزین می‌شود -->
     <div class="c2-map-wrap">
       <iframe
         class="c2-map"
@@ -222,33 +220,122 @@
     </div>
   </section>
 
+  <!-- =================== بخش تیم توسعه دهنده (وسط صفحه) =================== -->
+  <div class="team-dev-section">
+    <button class="btn-team-dev" id="openTeamModalBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+      </svg>
+      تیم توسعه دهنده
+    </button>
+    <p class="team-dev-subtitle">متخصصانی که رویای شما را کد میکنند</p>
+  </div>
+
 </main>
+
+<!-- =================== مودال تیم توسعه دهنده =================== -->
+<div class="modal-overlay" id="teamModal">
+  <div class="modal-container">
+    <!-- هدر مودال با دکمه بستن -->
+    <div class="modal-header">
+      <h2 class="modal-title">تیم توسعه دهنده</h2>
+      <button class="modal-close-btn" id="closeModalBtn" aria-label="بستن مودال">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="team-cards-grid">
+      <!-- کارت محمد جواد محمودی -->
+      <div class="team-card">
+        <div class="card-top">
+          <div class="card-avatar-frame">
+            <img src="assets/img/team/محمد جواد.webp" alt="محمد جواد محمودی" loading="lazy">
+          </div>
+          <div class="card-name">محمد جواد محمودی</div>
+          <div class="card-title">Full stack Developer</div>
+          <div class="card-title-fa">توسعه‌دهنده فول‌استک</div>
+        </div>
+        <div class="social-icons-row">
+          <!-- تلگرام -->
+          <a href="https://t.me/Immdjavad" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="تلگرام محمد جواد">
+            <span class="social-icon-link">
+              <svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.5 10.5l5.5 2 7-5.5-5 6 4 8.5 7.5-18Z"/></svg>
+            </span>
+            <span class="social-label">Telegram</span>
+          </a>
+          <!-- اینستاگرام -->
+          <a href="https://instagram.com/Immdjavad" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="اینستاگرام محمد جواد">
+            <span class="social-icon-link">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg>
+            </span>
+            <span class="social-label">Instagram</span>
+          </a>
+          <!-- سایت -->
+          <a href="https://Immdjavad.ir" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="وب‌سایت محمد جواد">
+            <span class="social-icon-link">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3.5c2.5 3 2.5 13 0 17M12 3.5c-2.5 3-2.5 13 0 17"/></svg>
+            </span>
+            <span class="social-label">Website</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- کارت عرفان سعادتی منعم -->
+      <div class="team-card">
+        <div class="card-top">
+          <div class="card-avatar-frame">
+            <img src="assets/img/team/عرفان.webp" alt="عرفان سعادتی منعم" loading="lazy">
+          </div>
+          <div class="card-name">عرفان سعادتی منعم</div>
+          <div class="card-title">UI Designer & Graphic Designer</div>
+          <div class="card-title-fa">طراح رابط کاربری و گرافیک</div>
+        </div>
+        <div class="social-icons-row">
+          <!-- تلگرام -->
+          <a href="https://t.me/erfunsam" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="تلگرام عرفان">
+            <span class="social-icon-link">
+              <svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.5 10.5l5.5 2 7-5.5-5 6 4 8.5 7.5-18Z"/></svg>
+            </span>
+            <span class="social-label">Telegram</span>
+          </a>
+          <!-- اینستاگرام -->
+          <a href="https://instagram.com/erfanmonem" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="اینستاگرام عرفان">
+            <span class="social-icon-link">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg>
+            </span>
+            <span class="social-label">Instagram</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <nav class="nav-pill" aria-label="ناوبری اصلی">
   <a class="nav-item" data-color="#00ffff" href="index.html">
       <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
-      <span class="nav-label">صفحه اصلی</span>
+      <span class="nav-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="nav-label">صفحه اصلی</span></span>
     </a>
     <a class="nav-item" data-color="#7bfeff" href="about.html">
       <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
-      <span class="nav-label">درباره ما</span>
+      <span class="nav-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
+      <span class="nav-label">درباره ما</span></span>
     </a>
     <a class="nav-item" data-color="#0c8d8d" href="projects.html">
       <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
-      <span class="nav-label">پروژه‌ها</span>
+      <span class="nav-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="5.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="15.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="15.5" width="7" height="7" rx="1.2"/></svg>
+      <span class="nav-label">پروژه‌ها</span></span>
     </a>
     <a class="nav-item" data-color="#b9feff" href="articles.html">
       <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
-      <span class="nav-label">مقالات</span>
+      <span class="nav-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 16h6"/></svg>
+      <span class="nav-label">مقالات</span></span>
     </a>
-    <a class="nav-item" data-color="#125454" href="contact.html">
+    <a class="nav-item is-active" data-color="#125454" href="contact.html">
       <span class="nav-ring"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4.5 7 12 13l7.5-6"/></svg>
-      <span class="nav-label">تماس با ما</span>
+      <span class="nav-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="M4.5 7 12 13l7.5-6"/></svg>
+      <span class="nav-label">تماس با ما</span></span>
     </a>
   </nav>
 
@@ -280,12 +367,12 @@
   </div>
   <div class="footer-bottom">
     <span>© ۱۴۰۴ رویایی رسا</span>
-    <span>ساخته‌شده با ❤ برای رویاهای رسا</span><a href="admin/index.html" style="color:inherit; opacity:.6; font-size:.8em; margin-inline-start:12px;">پنل مدیریت</a>
+    <span>ساخته‌شده با ❤ برای رویاهای رسا</span>
   </div>
 </footer>
 
-<script src="js/data-shim.js"></script>
 <script src="js/main.js"></script>
 <script src="js/contact.js"></script>
+
 </body>
 </html>
